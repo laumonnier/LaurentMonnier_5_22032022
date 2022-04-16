@@ -15,6 +15,7 @@ function getProducts(){
 
         function addTagImgInDiv(){
             var newElmtImg = document.createElement("img");
+            
             Object.assign(newElmtImg,{
                 src : "http://localhost:3000/images/kanap01.jpeg",
                 alt : "Photographie du"&products[i].name
@@ -30,7 +31,7 @@ function getProducts(){
                 alert ("The id don't existing !")
             }
         }
-        var imageUrl = products[0].imageUrl;
+        var imageUrl = `&{products[0].imageUrl}`;
         var url = new URL(imageUrl);
         var name = url.searchParams.get(url);
         console.log(imageUrl);
