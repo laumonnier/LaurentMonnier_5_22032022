@@ -18,14 +18,13 @@ async function getProducts() {
         function addChildOfSection(){
             for(var i in products){
                 var newChildOfSection = document.createElement("a");
-                var newUrl = `http://localhost:3000/api/products?id=0`;
-                var url = new URL(newUrl);
-                var search_id = new URLSearchParams(url.search);
+                var lien_a = `./product.html?id=${products[i]._id}`;
+                var search_id = new URLSearchParams(lien_a);
                 if(search_id.has('id')){
-                    var id = url.searchParams.get(id);
+                    var id = lien_a.searchParams.get(id);
                 }
                 Object.assign(newChildOfSection, {
-                    href : `http://localhost:3000/api/products?id=${products[0]._id}`,
+                    href : `./product.html?id=${products[i]._id}`,
                     id : id
                 })            
                 parentNodeSection.appendChild(newChildOfSection);
@@ -80,7 +79,7 @@ async function getProducts() {
         var newUrl_a = new URL(url);
         var id = newUrl_a.searchParams.get("id");
         console.log(id);
-        console.log(products);     
+        console.log(products[1]);    
     })
     .catch(function(err){
         err = console.log("There is an error in the request !");
@@ -94,4 +93,3 @@ var url = `http://localhost:3000/images/kanap01.jpeg?id=${_id}`
 var newUrl_a = new URL(url);
 var id = newUrl_a.searchParams.get("id");
 console.log(id);
-
