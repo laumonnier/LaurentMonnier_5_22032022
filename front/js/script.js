@@ -35,14 +35,13 @@ async function getProducts() {
         function addChildToSection(){
             for(var i in products){
                 var newChildOfSection = document.createElement("a");
-                var lien_a = `./product.html?id=${products[i]._id}`;
-                var search_id = new URLSearchParams(lien_a);
-                if(search_id.has('id')){
-                    var id = lien_a.searchParams.get(id);
-                }
+                var link_initial = "./product.html?";
+                const newUrlLink = new URLSearchParams();
+                newUrlLink.set("id",`${products[i]._id}`);
+                const globalLink = `${link_initial}${newUrlLink}`
+                console.log(globalLink.toString)
                 Object.assign(newChildOfSection, {
-                    href : `./product.html?id=${products[i]._id}`,
-                    id : id
+                    href : globalLink
                 })            
                 parentNodeSection.appendChild(newChildOfSection);
             }
@@ -109,4 +108,3 @@ async function getProducts() {
 };
 
 getProducts();
-
