@@ -10,15 +10,18 @@ function getProducts(){
     .then(function(data){
         const products = data;
         console.log(products);
-        addTagImgInDiv();
+        console.log(location.href);
+        // addTagImgToDiv();
+        const pagelocation = window.location.href;
+        var newUrlImg = new URL(pagelocation);
+        var idProduct = newUrlImg.searchParams.get("id");
+        console.log(idProduct);
 
-
-        function addTagImgInDiv(){
-            var newElmtImg = document.createElement("img");
-            
+        function addTagImgToDiv(){
+            const newElmtImg = document.createElement("img");
             Object.assign(newElmtImg,{
                 src : "http://localhost:3000/images/kanap01.jpeg",
-                alt : "Photographie du"&products[i].name
+                alt : `Photographie du ${products[i].name}`
             })
             document.getElementsByClassName('item__img').appendChild(newElmtImg);
         }
