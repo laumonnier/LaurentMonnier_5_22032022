@@ -23,6 +23,7 @@ function productGet(){
         console.log(product);
 
         addTagImgToDiv();
+        addTitleToArticle();
 
          /**Function "addTagImgToDiv()" to create a tag "img", with its attributes, child of the tag "div" to classe "class = item__img" for one product of the API. Especially to the getElementsByClassName() method. */
         function addTagImgToDiv(){
@@ -32,7 +33,18 @@ function productGet(){
                 alt : product.altTxt
             })
             var listElmt = document.getElementsByClassName("item__img");
-            listElmt[0].appendChild(newImgElmt);    
+            if (listElmt != 0){
+            listElmt[0].appendChild(newImgElmt);
+            }else{
+                console.log("There is no class : 'item__img' !");
+            }    
+        }
+
+        function addTitleToArticle(){
+            document
+                .getElementById("title")
+                .innerText = product.name;
+
         }
 
     })
