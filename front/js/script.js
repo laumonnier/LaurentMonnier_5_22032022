@@ -33,11 +33,11 @@ async function getProducts() {
         /** Function 'addChildToSection()' to create a tag 'a' with its attributes for all API products.
          * Using the 'URLSearchParams' concept to send the desired product to the 'product.htmls' page */
         function addChildToSection(){
-            for(var i in products){
+            for(var product in products){
                 var newChildOfSection = document.createElement("a");
                 var link_initial = "./product.html?";
                 const newUrlLink = new URLSearchParams();
-                newUrlLink.set("id",`${products[i]._id}`);
+                newUrlLink.set("id",`${products[product]._id}`);
                 const globalLink = `${link_initial}${newUrlLink}`
                 console.log(globalLink.toString)
                 Object.assign(newChildOfSection, {
@@ -58,41 +58,41 @@ async function getProducts() {
         
         /**Function 'addTagImgToArticle()' to create a tag 'img', with its attributes, child of the tag 'article' for all products of the API. Especially to the getElementsByTagName() method. */
         function addTagImgToArticle(){
-            for(var i in products){
+            for(var product in products){
                 const newEltImg = document.createElement("img");
                 Object.assign(newEltImg, {
-                    src : products[i].imageUrl,
-                    alt : products[i].altText
+                    src : products[product].imageUrl,
+                    alt : products[product].altText
                 });
                 var listArticle = document.getElementsByTagName("article");
-                listArticle[i].appendChild(newEltImg);
+                listArticle[product].appendChild(newEltImg);
                 
             } 
         }
         
         /**Function 'addTagTitleToArticle()' to create a tag 'h3', with its attributes, child of the tag 'article' for all products of the API. Especially the getElementsByTagName() method. */
         function addTagTitleToArticle(){
-            for(var i in products){
+            for(var product in products){
                 const newEltTitle = document.createElement("h3");
                 Object.assign(newEltTitle, {
                     class : "productName",
-                    innerText : products[i].name
+                    innerText : products[product].name
                 })
                 var listArticle = document.getElementsByTagName("article");
-                listArticle[i].appendChild(newEltTitle);
+                listArticle[product].appendChild(newEltTitle);
             }  
         }
 
         /**Function 'addTagParagraphToArticle()' to create a tag 'p', with its attributes, child of the tag 'article' for all products of the API. Especially the getElementsByTagName() method. */
         function addTagParagraphToArticle(){
-            for(var i in products){
+            for(var product in products){
                 const newEltPrgrph = document.createElement("p");
                 Object.assign(newEltPrgrph, {
                     class : "productDescription",
-                    innerText : products[i].description
+                    innerText : products[product].description
                 })
                 var listArticle = document.getElementsByTagName("article");
-                listArticle[i].appendChild(newEltPrgrph);
+                listArticle[product].appendChild(newEltPrgrph);
             }
         }    
         var url = `http://localhost:3000/images?id=${products[0]._id}`;

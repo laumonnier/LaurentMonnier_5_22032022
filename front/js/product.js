@@ -26,7 +26,8 @@ function productGet(){
         addTitleToArticle();
         addPriceToArticle();
         addDescriptionToArticle();
-        
+        addColorsChoiceToArticle();
+
 
          /**Function "addTagImgToDiv()" to create a tag "img", with its attributes, child of the tag "div" to classe "class = item__img" for one product of the API. Especially to the getElementsByClassName() method. */
         function addTagImgToDiv(){
@@ -62,6 +63,19 @@ function productGet(){
             document
                 .getElementById("description")
                 .innerText = product.description;
+        }
+
+        /**Feature to choose the color of the item from a drop-down list */
+        function addColorsChoiceToArticle(){
+            const colors = product.colors;
+            for(var color in colors){
+                const newChildToSelect = document.createElement("option");
+                Object.assign(newChildToSelect,{
+                    value : product.colors[color],
+                    innerText : product.colors[color]
+                })
+                document.getElementById("colors").appendChild(newChildToSelect);
+            }
         }
 
     })
