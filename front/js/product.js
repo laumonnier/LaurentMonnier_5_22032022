@@ -25,6 +25,8 @@ function productGet(){
         addTagImgToDiv();
         addTitleToArticle();
         addPriceToArticle();
+        addDescriptionToArticle();
+        
 
          /**Function "addTagImgToDiv()" to create a tag "img", with its attributes, child of the tag "div" to classe "class = item__img" for one product of the API. Especially to the getElementsByClassName() method. */
         function addTagImgToDiv(){
@@ -40,7 +42,7 @@ function productGet(){
                 console.log("There is no class : 'item__img' !");
             }    
         }
-
+        
         /**The function "addTitleToArticle()" indicates the Title of the selected article */
         function addTitleToArticle(){
             document
@@ -53,6 +55,13 @@ function productGet(){
             document
                 .getElementById("price")
                 .innerText = product.price + " ";
+        }
+
+        /**The function "addDescriptionToArticle()" indicates the description of the selected article */
+        function addDescriptionToArticle(){
+            document
+                .getElementById("description")
+                .innerText = product.description;
         }
 
     })
