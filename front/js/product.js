@@ -20,14 +20,12 @@ function productGet(){
     })
     .then(function(data){
         const product = data;
-        console.log(product);
 
         addTagImgToDiv();
         addTitleToArticle();
         addPriceToArticle();
         addDescriptionToArticle();
         addColorsChoiceToArticle();
-
 
          /**Function "addTagImgToDiv()" to create a tag "img", with its attributes, child of the tag "div" to classe "class = item__img" for one product of the API. Especially to the getElementsByClassName() method. */
         function addTagImgToDiv(){
@@ -37,7 +35,7 @@ function productGet(){
                 alt : product.altTxt
             })
             var listElmt = document.getElementsByClassName("item__img");
-            if (listElmt != 0){
+            if (listElmt.lenght != 0){
             listElmt[0].appendChild(newImgElmt);
             }else{
                 console.log("There is no class : 'item__img' !");
@@ -65,7 +63,7 @@ function productGet(){
                 .innerText = product.description;
         }
 
-        /**Feature to choose the color of the item from a drop-down list */
+        /**Function to choose the color of the item from a drop-down list */
         function addColorsChoiceToArticle(){
             const colors = product.colors;
             for(var color in colors){
