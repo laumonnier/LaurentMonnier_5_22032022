@@ -21,6 +21,21 @@ const newPrgphElmt = document.createElement("p");
     }
 }
 
+addArticleToSection();
+addImageDiv();
+addProductImage();
+addContentDiv();
+addDescriptionDiv();
+addProductNameTitle();
+addColorPgrph();
+addPricePgrph();
+addSettingsDiv();
+addSettingsQtyDiv();
+addQtityPargrph();
+addQtityInput();
+addSettingsDeleteDiv();
+addDeleteItemPargrph();
+
 /**Addition of an element "article" corresponding to an article, and it is in this part that our articles will be added or deleted or modified */
 function addArticleToSection(){
     const newArticleElmt = document.createElement("article");
@@ -37,7 +52,7 @@ function addImageDiv(){
     Object.assign(newDivElmt,{
         class : "cart__item__img"
     })
-    document.getElementsById("{product._id}").appendChild(newDivElmt);
+    document.getElementById("{product._id}").appendChild(newDivElmt);
 } 
 
 /**Added an element "img" to insert the image of the article */
