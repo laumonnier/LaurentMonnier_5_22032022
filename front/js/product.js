@@ -110,46 +110,45 @@ function productGet(){
                     quantity : productQty, 
                     color : productColor
                 }
-                console.log(item.id);
-                console.log(item.quantity);
-                console.log(item.color + "color");
+                // console.log(item.id);
+                // console.log(item.quantity);
+                // console.log(item.color + "color");
                 if(productColor === ""){
                     alert('Il faut choisir une couleur SVP !!!');
                     document.location.reload();
                     addArticleToCart();
                 }else{
                 var itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
-                console.log(itemsLocalStorage);
+                // console.log(itemsLocalStorage);
                 if(itemsLocalStorage != null){
                     var itemOk = 0;
                     for (var i = 0; i < itemsLocalStorage.length; i++){
-                        console.log(itemsLocalStorage.length);
-                        console.log(itemsLocalStorage[i].id);
-                        console.log(itemsLocalStorage[i].quantity);
-                        console.log(itemsLocalStorage[i].color);
+                        // console.log(itemsLocalStorage.length);
+                        // console.log(itemsLocalStorage[i].id);
+                        // console.log(itemsLocalStorage[i].quantity);
+                        // console.log(itemsLocalStorage[i].color);
                         if ((item.id === itemsLocalStorage[i].id) && (item.color === itemsLocalStorage[i].color)){
-                            console.log("Coucou"); //Vérifier
+                            // console.log("Coucou"); //Vérifier
                             itemOk++;
                             itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
                             itemsLocalStorage[i].quantity += item.quantity; // Vérifier cette ligne
-                            console.log(itemsLocalStorage[i].quantity);
+                            // console.log(itemsLocalStorage[i].quantity);
                             localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-                            console.log(itemsLocalStorage.length);
+                            // console.log(itemsLocalStorage.length);
                         }
                     }    
                     if(itemOk === 0){
                             itemsLocalStorage.push(item);
-                            console.log("Hallo"); // Vérifier
+                            // console.log("Hallo"); // Vérifier
                             localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-                            console.log(itemsLocalStorage.length);
+                            // console.log(itemsLocalStorage.length);
                     }               
                 }else{
                     itemsLocalStorage = [];
                     itemsLocalStorage.push(item);
-                    console.log("Laurent");
+                    // console.log("Laurent");
                     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-                    console.log(itemsLocalStorage.length);
-
+                    // console.log(itemsLocalStorage.length);
                 }
                 }
             })
