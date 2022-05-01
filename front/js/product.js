@@ -26,9 +26,14 @@ function productGet(){
         addPriceToArticle();
         addDescriptionToArticle();
         addColorsChoiceToArticle();
+        // valueInQuantity();
 
         addArticleToCart();
-        console.log(JSON.parse(localStorage["items"] || null))
+        // localStorage.clear();
+        console.log(JSON.parse(localStorage["item"] || null))
+        for (var i = 0; i < localStorage.length; i++){
+            console.log (localStorage.key(i));
+        }
          /**Function "addTagImgToDiv()" to create a tag "img", with its attributes, child of the tag "div" to classe "class = item__img" for one product of the API. Especially to the getElementsByClassName() method. */
         function addTagImgToDiv(){
             const newImgElmt = document.createElement("img");
@@ -79,24 +84,81 @@ function productGet(){
         }
 
         function valueInQuantity(){
-
+            document
+                .getElementById("quantity")
+                .setAttribute("value","1");
         }
-        
-        function addArticleToCart(){
-            var productQty = document.getElementById("quantity").value;
+
+        function valueInColor(){
             var productColor = document.getElementById("colors").value;
-            var items = {
-                id : product._id, 
-                quantity : productQty, 
-                color : productColor
+            if(productColor === ""){
+                alert('Il faut choisir une couleur SVP !!!');
+                addArticleToCart();
             }
-            localStorage.setItem('items', JSON.stringify(items));
         }
 
+        /**The function "addDescriptionToArticle()" allows to add a product ("id", "quantity", "color") to the cart after the "click" of the mouse on the "Ajouter au panier" button of the product.html page */
+        function addArticleToCart(){
+            const addToCart = document.getElementById("addToCart");
+            addToCart.addEventListener('click', (e) => {
+                // event.preventDefault();
+                // event.stopPropagation();
+                var productQty = parseInt(document.getElementById("quantity").value);
+                var productColor = document.getElementById("colors").value;  
+                var item = {
+                    id : product._id, 
+                    quantity : productQty, 
+                    color : productColor
+                }
+                console.log(item.id);
+                console.log(item.quantity);
+                console.log(item.color + "color");
+                if(productColor === ""){
+                    alert('Il faut choisir une couleur SVP !!!');
+                    document.location.reload();
+                    addArticleToCart();
+                }else{
+                var itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
+                console.log(itemsLocalStorage);
+                if(itemsLocalStorage != null){
+                    var itemOk = 0;
+                    for (var i = 0; i < itemsLocalStorage.length; i++){
+                        console.log(itemsLocalStorage.length);
+                        console.log(itemsLocalStorage[i].id);
+                        console.log(itemsLocalStorage[i].quantity);
+                        console.log(itemsLocalStorage[i].color);
+                        if ((item.id === itemsLocalStorage[i].id) && (item.color === itemsLocalStorage[i].color)){
+                            console.log("Coucou"); //Vérifier
+                            itemOk++;
+                            itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
+                            itemsLocalStorage[i].quantity += item.quantity; // Vérifier cette ligne
+                            console.log(itemsLocalStorage[i].quantity);
+                            localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
+                            console.log(itemsLocalStorage.length);
+                        }
+                    }    
+                    if(itemOk === 0){
+                            itemsLocalStorage.push(item);
+                            console.log("Hallo"); // Vérifier
+                            localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
+                            console.log(itemsLocalStorage.length);
+                    }               
+                }else{
+                    itemsLocalStorage = [];
+                    itemsLocalStorage.push(item);
+                    console.log("Laurent");
+                    localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
+                    console.log(itemsLocalStorage.length);
 
+                }
+                }
+            })
+        }
     })
+    
     .catch(function(err){
         err = console.log("There is an error in the request");
     })
 }
 productGet(); 
+ 
