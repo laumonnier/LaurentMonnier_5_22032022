@@ -255,13 +255,16 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 console.log(removed);
                 removed.addEventListener('click', function(e) {
                     var removeClicked = e.target;
-                //     console.log(value);//Test positif
-                //     input.setAttribute("value",`${value}`);
-                //     console.log(input);//Test positif
-                //     console.log(itemsLocalStorage[i].quantity);//Test positif
+                    removeClicked = removed.closest("article");
+                    removeClicked.remove();
+                    itemsLocalStorage.splice(i,1);
+                    localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
+                    // itemsLocalStorage[i].remove();
                 //     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
                 //     itemsLocalStorage[i].quantity = parseInt(`${value}`);
                 //     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
+                    addTotalQuantity();
+                    updateTotalPrice();
                 });
             }
 
