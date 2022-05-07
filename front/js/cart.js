@@ -1,7 +1,6 @@
 const api_url = 'http://localhost:3000/api/products/';
 var itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
 console.log(itemsLocalStorage); //Test positif
-totalPrice = 0;
 for(var i = 0 ; i < itemsLocalStorage.length ; i++){
     
     async function getProduct(i) {
@@ -56,10 +55,11 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             addSettingsDeleteDiv(i);
             addDeleteItemPargrph(i);
             addTotalQuantity();
-            addTotalPrice(i);
+            updateTotalPrice();
             
             // changeInQuantity(i);
             inputChanged(i);
+            inputRemoved(i);
 
             /**Addition of an element "article" corresponding to an article, and it is in this part that our articles will be added or deleted or modified */
             function addArticleToSection(i){
@@ -206,9 +206,12 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             }
 
             /**Addition of the "total price" for all products  */
-            function addTotalPrice(i){
+            function updateTotalPrice(){
                 var totalP = new Intl.NumberFormat();
-                totalPrice += itemsLocalStorage[i].quantity*product.price;
+                var totalPrice = 0;
+                for(var i = 0 ; i < itemsLocalStorage.length ; i++){
+                    totalPrice += itemsLocalStorage[i].quantity*product.price;
+                }
                 document
                     .getElementById("totalPrice")
                     .innerText = totalP.format(totalPrice);
@@ -238,6 +241,27 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
                     itemsLocalStorage[i].quantity = parseInt(`${value}`);
                     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
+                    addTotalQuantity();
+                    updateTotalPrice();
+                });
+            }
+
+            //En essais
+
+            /**function to delete an item directly in the shopping cart while saving in the "LocalStorage" */
+            function inputRemoved(i){
+                const removeElements = document.getElementsByClassName("deleteItem");
+                const removed = removeElements[i].closest(".deleteItem");
+                console.log(removed);
+                removed.addEventListener('click', function(e) {
+                    var removeClicked = e.target;
+                //     console.log(value);//Test positif
+                //     input.setAttribute("value",`${value}`);
+                //     console.log(input);//Test positif
+                //     console.log(itemsLocalStorage[i].quantity);//Test positif
+                //     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
+                //     itemsLocalStorage[i].quantity = parseInt(`${value}`);
+                //     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
                 });
             }
 
