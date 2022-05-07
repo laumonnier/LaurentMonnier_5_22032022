@@ -1,9 +1,9 @@
 const api_url = 'http://localhost:3000/api/products/';
 var itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
 console.log(itemsLocalStorage); //Test positif
-
+totalPrice = 0;
 for(var i = 0 ; i < itemsLocalStorage.length ; i++){
-
+    
     async function getProduct(i) {
         fetch(api_url + itemsLocalStorage[i].id)
         .then(function(res){
@@ -20,6 +20,10 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             const parentNodeSection =  document.getElementById("cart__items");
             const newDivElmt = document.createElement("div");
             const newPrgphElmt = document.createElement("p");
+            // var totalPricePerAtcle = itemsLocalStorage[i].quantity*product.price;
+            // console.log(totalPricePerAtcle); //Test positif
+            
+            // console.log(totalPrice); //Test positif
             //The function retrieves a list of items obtained by their class name
             /**
              * Recovering data
@@ -36,6 +40,7 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 }
             }
 
+            
             addArticleToSection(i);
             addImageDiv(i);
             addProductImage(i);
@@ -50,6 +55,11 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             addQtityInput(i);
             addSettingsDeleteDiv(i);
             addDeleteItemPargrph(i);
+            addTotalQuantity();
+            addTotalPrice(i);
+            
+            // changeInQuantity(i);
+            inputChanged(i);
 
             /**Addition of an element "article" corresponding to an article, and it is in this part that our articles will be added or deleted or modified */
             function addArticleToSection(i){
@@ -150,17 +160,21 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             /**Add an "input" element to display the quantity */
             function addQtityInput(i){
                 const newInputElmt = document.createElement("input");
-                Object.assign(newInputElmt,{
-                    type : "number",
-                    class : "itemQuantity",
-                    name : "itemQuantity",
-                    min : "1",
-                    max : "100",
-                    value : `${itemsLocalStorage[i].quantity}`,
-                })
+                newInputElmt.setAttribute("class", "itemQuantity");
+                newInputElmt.setAttribute("type", "number");
+                newInputElmt.setAttribute("name", "itemQuantity");
+                newInputElmt.setAttribute("min", "1");
+                newInputElmt.setAttribute("max", "100");
+                newInputElmt.setAttribute("value", `${itemsLocalStorage[i].quantity}`);
                 listElmt("cart__item__content__settings__quantity", i, newInputElmt);
                 console.log(newInputElmt); //Test positif
+                // if(newInputElmt.getAttribute("value") != `${itemsLocalStorage[i].quantity}`){
+                //     newInputElmt.addEventListener('change', inputChanged);
+                // }
             }
+
+            // var input = document.getElementsByClassName("itemQuantity")
+
 
             /**Addition of a "div" element to include "settings Delete" */
             function addSettingsDeleteDiv(nbr){
@@ -178,10 +192,110 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 listElmt("cart__item__content__settings__delete", i, newPrgphElmt);
                 console.log(newPrgphElmt); //Test positif
             }
+            
+            /**Addition of the "total quantity" for article */
+            function addTotalQuantity(){
+                var total = 0;
+                for(var i = 0; i < itemsLocalStorage.length; i++){
+                    total += itemsLocalStorage[i].quantity;            
+                }
+                document
+                    .getElementById("totalQuantity")
+                    .innerText = total;
+                console.log(total); //Test positif
+            }
+
+            /**Addition of the "total price" for all products  */
+            function addTotalPrice(i){
+                var totalP = new Intl.NumberFormat();
+                totalPrice += itemsLocalStorage[i].quantity*product.price;
+                document
+                    .getElementById("totalPrice")
+                    .innerText = totalP.format(totalPrice);
+                console.log(totalP.format(totalPrice)); //Test positif
+            }
+
+            /**Add an "error message" to the first name */
+            function addFirstNameErrorMsge(){
+                
+                newPrgphElmt.setAttribute("class", "deleteItem");
+                newPrgphElmt.innerText = "Supprimer";
+                listElmt("cart__item__content__settings__delete", i, newPrgphElmt);
+                console.log(newPrgphElmt); //Test positif
+            }
+
+            /**function allowing the decrementing and incrementing of the products while recording the quantities in the "LocalStorage" */
+            function inputChanged(i){
+                const inputElements = document.getElementsByClassName("itemQuantity");
+                const input = inputElements[i].closest(".itemQuantity");
+                console.log(input);
+                input.addEventListener('change', function(e) {
+                    var value = e.target.value;
+                    console.log(value);//Test positif
+                    input.setAttribute("value",`${value}`);
+                    console.log(input);//Test positif
+                    console.log(itemsLocalStorage[i].quantity);//Test positif
+                    itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
+                    itemsLocalStorage[i].quantity = parseInt(`${value}`);
+                    localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
+                });
+            }
+
+            //En essais
+            // function inputChanged(){
+            //     var inputQuantity = document.getElementsByClassName("itemQuantity");
+            //         var input = inputQuantity[i];
+            //         // console.log(input);
+            //         input.addEventListener('change', function(e) {  
+            //             var value = e.target.value;
+            //             console.log(value);
+            //             // var inputQuantity = document.getElementsByClassName("itemQuantity");
+            //             // var input = inputQuantity[i];
+            //             console.log(input);
+            //             input.setAttribute("value",`${value}`);
+            //             // localStorage.setItem("item", JSON.stringify(itemsLocalStorage));
+            //             input.getAttribute("value");
+            //             // console.log(input);
+            //             var itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
+            //             console.log(itemsLocalStorage);
+            //             // itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
+            //             // itemsLocalStorage[i].quantity = value;
+            //             // itemsLocalStorage[i].quantity; //Test Négatif
+            //             // console.log(quantity);//Test Négatif
+            //             // itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);//A essayer
+            //             // var productQty = parseInt(document.getElementById("quantity").value);//A essayer
+            //         });
+            //         localStorage.setItem("item", JSON.stringify(itemsLocalStorage));
+            // }
+
+
+            //En essais
+            // function inputChanged(e){
+            //     var quantity = e.target.value;
+            //     var inputQuantity = document.getElementsByClassName("itemQuantity");
+            //     var input = inputQuantity[i];
+            //     input.setAttribute("value", `${quantity}`);
+            //     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
+            //     itemsLocalStorage[i].quantity = quantity;
+            //     localStorage.setItem("item", JSON.stringify(itemsLocalStorage[i].quantity)); 
+                
+                // var input = itemsLocalStorage[i].quantity;
+                // console.log(itemsLocalStorage.length);
+                // input.addEventListener('change', function(e) {  
+                //     var value = e.target.value;
+                //     input.setAttribute("value",`${value}`);
+                // });
+                // localStorage.setItem("item", JSON.stringify(itemsLocalStorage));
+                // document.location.reload();
+            // }
+            
         })
         .catch(function(err){
             err = console.log("There is an error in the request !");
         })    
     }
     getProduct(i);
+
 }
+
+    
