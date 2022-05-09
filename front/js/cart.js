@@ -59,14 +59,14 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             
             // changeInQuantity(i);
             inputChanged(i);
-            inputRemoved(i);
+            articleRemoved(i);
 
             /**Addition of an element "article" corresponding to an article, and it is in this part that our articles will be added or deleted or modified */
             function addArticleToSection(i){
                 const newArticleElmt = document.createElement("article");
                 newArticleElmt.setAttribute("class", "cart__item")
-                newArticleElmt.setAttribute("data-id", `product-${i}`);
-                newArticleElmt.setAttribute("data-color", itemsLocalStorage[i].color);
+                newArticleElmt.setAttribute("data-id", `${product._id}`);
+                newArticleElmt.setAttribute("data-color", `${itemsLocalStorage[i].color}`);
                 parentNodeSection.appendChild(newArticleElmt);
                 console.log(newArticleElmt); //Test positif
             }
@@ -210,7 +210,7 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 var totalP = new Intl.NumberFormat();
                 var totalPrice = 0;
                 for(var i = 0 ; i < itemsLocalStorage.length ; i++){
-                    totalPrice += itemsLocalStorage[i].quantity*product.price;
+                    totalPrice += (itemsLocalStorage[i].quantity)*(product.price);
                 }
                 document
                     .getElementById("totalPrice")
@@ -249,13 +249,14 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             //En essais
 
             /**function to delete an item directly in the shopping cart while saving in the "LocalStorage" */
-            function inputRemoved(i){
+            function articleRemoved(i){
                 const removeElements = document.getElementsByClassName("deleteItem");
                 const removed = removeElements[i].closest(".deleteItem");
                 console.log(removed);
                 removed.addEventListener('click', function(e) {
                     var removeClicked = e.target;
                     removeClicked = removed.closest("article");
+                    console.log(removeClicked);
                     removeClicked.remove();
                     itemsLocalStorage.splice(i,1);
                     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
@@ -263,8 +264,9 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 //     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
                 //     itemsLocalStorage[i].quantity = parseInt(`${value}`);
                 //     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-                    addTotalQuantity();
-                    updateTotalPrice();
+                    addTotalQuantity();//A refaire
+                    updateTotalPrice();//A refaire
+
                 });
             }
 
@@ -315,6 +317,109 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 // localStorage.setItem("item", JSON.stringify(itemsLocalStorage));
                 // document.location.reload();
             // }
+
+            function formValidated(){
+                firstNameValidated();
+                lastNameValidated();
+                addressValidated();
+                cityValidated();
+                emailValidated();
+            }
+
+            function firstNameValidated(){
+                var firstName = document.input.firstName;
+                var maskFirstName = /[A-Za-z]/gi;
+                console.log(firstName.value);
+                if(firstName.value == ""){
+                    document.getElementById("firstNameErrorMsg")
+                            .innerHTML = "SVP, entrez un Prénom !!!";
+                    firstName.focus();
+                    return false;
+                }
+                if(firstName.value != maskFirstName){
+                    document.getElementById("firstNameErrorMsg")
+                            .innerHTML = "SVP, entrez un Prénom valide !!!";
+                    firstName.focus();
+                    return false;
+                }else{
+                    firstName.value[0].toUpperCase() + firstName.value.slice(1);
+                }
+                    
+            }
+
+            function lastNameValidated(){
+                var lastName = document.input.lastName;
+                var maskLastName = /[A-Za-z\-]/gi;
+                console.log(lastName.value);
+                if(lastName.value == ""){
+                    document.getElementById("lastNameErrorMsg")
+                            .innerHTML = "SVP, entrez un Nom de Famille !!!";
+                    lastName.focus();
+                    return false;
+                }
+                if(firstName.value != maskLastName){
+                    document.getElementById("lastNameErrorMsg")
+                            .innerHTML = "SVP, entrez un Nom de Famille valide !!!";
+                    firstName.focus();
+                    return false;
+                }else{
+                    lastName.value.toUpperCase();
+                }
+            }
+
+            function addressValidated(){
+                var address = document.input.address;
+                var mask1 = /^[0-9]{1,}[A-Za-z\-\._\W\s][^@~&%]/g;
+                console.log(address.value);
+                if(address.value == ""){
+                    document.getElementById("addressErrorMsg")
+                            .innerHTML = "SVP, entrez une Adresse (avec un numéro de rue)!!!";
+                    address.focus();
+                    return false;
+                }
+                if(mask1.test(address) == false){
+                    document.getElementById("addressErrorMsg")
+                            .innerHTML = "SVP, entrez une Adresse valide (avec un numéro de rue ou impasse au début)!!!";
+                    address.focus();
+                    return false;
+                }
+            }
+
+            function cityValidated(){
+                var city = document.input.city;
+                var mask1 = /[A-Za-z\-][^@~&%]/g;
+                console.log(city.value);
+                if(city.value == ""){
+                    document.getElementById("cityErrorMsg")
+                            .innerHTML = "SVP, entrez une Ville !!!";
+                    city.focus();
+                    return false;
+                }
+                if(mask1.test(city) == false){
+                    document.getElementById("cityErrorMsg")
+                            .innerHTML = "SVP, entrez une Ville valide !!!";
+                    city.focus();
+                    return false;
+                }
+            }
+
+            function emailValidated(){
+                var email = document.input.email;
+                var mask1 = /[A-Za-z\-@]/g;
+                console.log(email.value);
+                if(email.value == ""){
+                    document.getElementById("emailErrorMsg")
+                            .innerHTML = "SVP, entrez un email !!!";
+                    email.focus();
+                    return false;
+                }
+                if(mask1.test(email) == false){
+                    document.getElementById("emailErrorMsg")
+                            .innerHTML = "SVP, entrez un email valide (n'oubliez pas le '@') !!!";
+                    email.focus();
+                    return false;
+                }
+            }
             
         })
         .catch(function(err){
