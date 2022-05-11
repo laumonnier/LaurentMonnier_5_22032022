@@ -1,6 +1,7 @@
 const api_url = 'http://localhost:3000/api/products/';
 var itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
 console.log(itemsLocalStorage); //Test positif
+
 for(var i = 0 ; i < itemsLocalStorage.length ; i++){
     
     async function getProduct(i) {
@@ -14,6 +15,7 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
         .then(function(data){
             const product = data;
             console.log(product); //Test positif
+            console.log(product.price)
             console.log(itemsLocalStorage[i].color); //Test positif
             console.log(itemsLocalStorage[i].quantity); //Test positif
             const parentNodeSection =  document.getElementById("cart__items");
@@ -54,19 +56,20 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             addQtityInput(i);
             addSettingsDeleteDiv(i);
             addDeleteItemPargrph(i);
-            addTotalQuantity();
-            updateTotalPrice();
+            addTotalQuantity(i);
+            updateTotalPrice(i);
             
             // changeInQuantity(i);
             inputChanged(i);
             articleRemoved(i);
 
             /**Added functionality for error messages when user enters data into form */
-            firstNameValidated();
-            lastNameValidated();
-            addressValidated();
-            cityValidated();
-            emailValidated();
+            // formOrderClicked();
+            // firstNameValidated();
+            // lastNameValidated();
+            // addressValidated();
+            // cityValidated();
+            // emailValidated();
 
             /**Addition of an element "article" corresponding to an article, and it is in this part that our articles will be added or deleted or modified */
             function addArticleToSection(i){
@@ -134,7 +137,7 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             /**Add a "p" element to indicate the price of the item */
             function addPricePgrph(i){
                 const newPrgphElmt = document.createElement("p");
-                newPrgphElmt.innerText = product.price + " €";
+                newPrgphElmt.innerText = `${product.price}` + " €";
                 listElmt("cart__item__content__description", i, newPrgphElmt);
                 console.log(newPrgphElmt); //Test positif
             }
@@ -201,23 +204,25 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             }
             
             /**Addition of the "total quantity" for article */
-            function addTotalQuantity(){
-                var total = 0;
-                for(var i = 0; i < itemsLocalStorage.length; i++){
-                    total += itemsLocalStorage[i].quantity;            
+            function addTotalQuantity(i){
+                let totalQuantity = 0;
+                for(i = 0 ; i < itemsLocalStorage.length ; i++){
+                    totalQuantity += itemsLocalStorage[i].quantity;
                 }
                 document
                     .getElementById("totalQuantity")
-                    .innerText = total;
-                console.log(total); //Test positif
+                    .innerText = totalQuantity;
+                // return totalQuantity
+                console.log(totalQuantity); //Test positif
             }
 
             /**Addition of the "total price" for all products  */
             function updateTotalPrice(){
-                var totalP = new Intl.NumberFormat();
-                var totalPrice = 0;
-                for(var i = 0 ; i < itemsLocalStorage.length ; i++){
-                    totalPrice += (itemsLocalStorage[i].quantity)*(product.price);
+                let totalPrice = 0;
+                let totalP = new Intl.NumberFormat();
+                for(let i = 0 ; i < itemsLocalStorage.length ; i++){
+                    console.log(product);
+                    totalPrice += itemsLocalStorage[i].quantity*product.price;
                 }
                 document
                     .getElementById("totalPrice")
@@ -226,13 +231,13 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             }
 
             /**Add an "error message" to the first name */
-            function addFirstNameErrorMsge(){
+            // function addFirstNameErrorMsge(){
                 
-                newPrgphElmt.setAttribute("class", "deleteItem");
-                newPrgphElmt.innerText = "Supprimer";
-                listElmt("cart__item__content__settings__delete", i, newPrgphElmt);
-                console.log(newPrgphElmt); //Test positif
-            }
+            //     newPrgphElmt.setAttribute("class", "deleteItem");
+            //     newPrgphElmt.innerText = "Supprimer";
+            //     listElmt("cart__item__content__settings__delete", i, newPrgphElmt);
+            //     console.log(newPrgphElmt); //Test positif
+            // }
 
             //Quelques tests à faire
 
@@ -242,7 +247,7 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 const input = inputElements[i].closest(".itemQuantity");
                 console.log(input);
                 input.addEventListener('change', function(e) {
-                    var value = e.target.value;
+                    let value = e.target.value;
                     console.log(value);//Test positif
                     input.setAttribute("value",`${value}`);
                     console.log(input);//Test positif
@@ -263,8 +268,8 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 const removed = removeElements[i].closest(".deleteItem");
                 console.log(removed);
                 removed.addEventListener('click', function(e) {
-                    var removeClicked = e.target;
-                    removeClicked = removed.closest("article");
+
+                    let removeClicked = removed.closest("article");
                     console.log(removeClicked);
                     removeClicked.remove();
                     itemsLocalStorage.splice(i,1);
@@ -328,17 +333,42 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             // }
 
             //En essais
-            function formValidated(){
+            function formOrderClicked(){
                 const orderButton = document.getElementById("order");
-                const removed = removeElements[i].closest(".deleteItem");
-                console.log(removed);
-                removed.addEventListener('click', function(e) {
-                    var removeClicked = e.target;
-                    removeClicked = removed.closest("article");
-                    console.log(removeClicked);
-                    removeClicked.remove();
-                    itemsLocalStorage.splice(i,1);
-                    localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
+                const orderInput = orderButton.closest("#order");
+                console.log(orderInput);
+                orderInput.addEventListener('click', formValidated);
+            }
+
+            class Contact {
+                constructor(firstName, lastName, address, city, email){
+                    this.firstName = firstName;
+                    this.lastName = lastName;
+                    this.address = address;
+                    this.city = city;
+                    this.email = email;
+                }
+            }
+
+            function formValidated(){
+                    // var orderClicked = e.target;
+                    firstNameValidated();
+                    lastNameValidated();
+                    addressValidated();
+                    cityValidated();
+                    emailValidated();
+                    if((firstNameValidated()||lastNameValidated()||addressValidated()||cityValidated()||emailValidated()) == false){
+                        alert("Attention, il y a une ou plusieurs erreur(s) dans votre formulaire !!!");
+                        document.location.reload();
+                        formOrderClicked();
+                    }else{
+                        var contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
+                        console.log(contact);
+                        itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
+                        console.log(itemsLocalStorage);
+                    }
+                    
+                    localStorage.setItem('contact', JSON.stringify(itemsLocalStorage));
                     // itemsLocalStorage[i].remove();
                 //     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
                 //     itemsLocalStorage[i].quantity = parseInt(`${value}`);
@@ -346,16 +376,15 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                     addTotalQuantity();//A refaire
                     updateTotalPrice();//A refaire
 
-                });
             }
             
             //En essais
-            function firstNameValidated(){
-                const firstName = document.getElementById("firstName");
-                const input = firstName.closest("#firstName");
+            function firstameValidated(){
+                const firstName = document.getElementById("order");
+                const input = firstName.closest("#order");
                 console.log(input);
-                input.addEventListener('change', function(e) {
-                    var value = e.target.value;
+                input.addEventListener('click', function(e) {
+                    var value = e.target;
                     console.log(value);//Test 
                     input.setAttribute("value",`${value}`);
                     console.log(input);//Test 
@@ -369,15 +398,16 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             }
 
             //En essais
-            function firstameValidated(){
+            function firstNameValidated(){
                 var firstName = document.getElementById("firstName");
                 var maskFirstName = /[A-Za-z]/;
                 console.log(firstName.value);
                 if(maskFirstName.test(firstName.value) == false){
                     document.getElementById("firstNameErrorMsg")
                             .innerHTML = "SVP, entrez un Prénom valide !!!";
+                    return false;
                 }else{
-                    firstName.value[0].toUpperCase() + firstName.value.slice(1);
+                    return firstName.value[0].toUpperCase() + firstName.value.slice(1);
                 }
                     
             }
@@ -389,9 +419,10 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 console.log(lastName.value);
                 if(firstName.value != maskLastName){
                     document.getElementById("lastNameErrorMsg")
-                    .innerHTML = "SVP, entrez un Nom de Famille valide !!!";
+                            .innerHTML = "SVP, entrez un Nom de Famille valide !!!";
+                    return false;
                 }else{
-                    lastName.value.toUpperCase();
+                    return lastName.value.toUpperCase();
                 }
             }
             
@@ -403,6 +434,9 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 if(mask1.test(address.value) == false){
                     document.getElementById("addressErrorMsg")
                             .innerHTML = "SVP, entrez une Adresse valide (avec un numéro de rue ou impasse au début)!!!";
+                    return false;
+                }else{
+                    return address.value;
                 }
             }
 
@@ -414,6 +448,9 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 if(mask1.test(city.value) == false){
                     document.getElementById("cityErrorMsg")
                             .innerHTML = "SVP, entrez une Ville valide !!!";
+                    return false;
+                }else{
+                    return city.value;
                 }
             }
 
@@ -425,6 +462,9 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 if(mask1.test(email.value) == false){
                     document.getElementById("emailErrorMsg")
                             .innerHTML = "SVP, entrez un email valide (n'oubliez pas le '@') !!!";
+                    return false;
+                }else{
+                    return email.value;
                 }
             }
             
