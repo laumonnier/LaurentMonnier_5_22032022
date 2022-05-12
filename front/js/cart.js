@@ -301,8 +301,8 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 //     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
                 //     itemsLocalStorage[i].quantity = parseInt(`${value}`);
                 //     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-                    addTotalQuantity();//A refaire
-                    updateTotalPrice();//A refaire
+                    addTotalQuantity();//ok
+                    updateTotalPrice();//ok
 
                 });
             }
@@ -328,14 +328,13 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
 
             function formValidated(){
                     // var orderClicked = e.target;
+                try{
                     firstNameValidated();
                     lastNameValidated();
                     addressValidated();
                     cityValidated();
                     emailValidated();
                     if((firstNameValidated()||lastNameValidated()||addressValidated()||cityValidated()||emailValidated()) == false){
-                        alert("Attention, il y a une ou plusieurs erreur(s) dans votre formulaire !!!");
-                        document.location.reload();
                         formOrderClicked();
                     }else{
                         var contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
@@ -349,8 +348,14 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 //     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
                 //     itemsLocalStorage[i].quantity = parseInt(`${value}`);
                 //     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-                    addTotalQuantity();//A refaire
-                    updateTotalPrice();//A refaire
+                    addTotalQuantity();//ok
+                    updateTotalPrice();//ok
+                } catch (err){
+                    alert("Une erreur est survenue sur la fonction formValidated!!!");
+                    document.location.reload();
+
+
+                }
 
             }
             
