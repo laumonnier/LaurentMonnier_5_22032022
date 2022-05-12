@@ -1,8 +1,8 @@
 const api_url = 'http://localhost:3000/api/products/';
-var itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
+let itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
 console.log(itemsLocalStorage); //Test positif
 
-for(var i = 0 ; i < itemsLocalStorage.length ; i++){
+for(let i = 0 ; i < itemsLocalStorage.length ; i++){
     
     async function getProduct(i) {
         fetch(api_url + itemsLocalStorage[i].id)
@@ -19,8 +19,6 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             console.log(itemsLocalStorage[i].color); //Test positif
             console.log(itemsLocalStorage[i].quantity); //Test positif
             const parentNodeSection =  document.getElementById("cart__items");
-            const newDivElmt = document.createElement("div");
-            const newPrgphElmt = document.createElement("p");
             // var totalPricePerAtcle = itemsLocalStorage[i].quantity*product.price;
             // console.log(totalPricePerAtcle); //Test positif
             
@@ -33,14 +31,13 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
              * @param { Object } newElmt
              */
             function listElmt(className, nbr, newElmt){
-                var listElmt = document.getElementsByClassName(className)
+                let listElmt = document.getElementsByClassName(className)
                 if(listElmt.lenght != 0){
                     listElmt[nbr].appendChild(newElmt);
                 }else{
                     console.log("There is no class : " + className + " !");
                 }
             }
-
             
             addArticleToSection(i);
             addImageDiv(i);
@@ -56,8 +53,8 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             addQtityInput(i);
             addSettingsDeleteDiv(i);
             addDeleteItemPargrph(i);
-            addTotalQuantity(i);
-            updateTotalPrice(i);
+            addTotalQuantity();
+            updateTotalPrice();
             
             // changeInQuantity(i);
             inputChanged(i);
@@ -204,9 +201,9 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             }
             
             /**Addition of the "total quantity" for article */
-            function addTotalQuantity(i){
+            function addTotalQuantity(){
                 let totalQuantity = 0;
-                for(i = 0 ; i < itemsLocalStorage.length ; i++){
+                for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     totalQuantity += itemsLocalStorage[i].quantity;
                 }
                 document
@@ -219,15 +216,41 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             /**Addition of the "total price" for all products  */
             function updateTotalPrice(){
                 let totalPrice = 0;
-                let totalP = new Intl.NumberFormat();
-                for(let i = 0 ; i < itemsLocalStorage.length ; i++){
-                    console.log(product);
-                    totalPrice += itemsLocalStorage[i].quantity*product.price;
+                let totalP = new Intl.NumberFormat();            
+                // let listArticle = document.getElementsByClassName("cart__item");
+                // console.log(listArticle.length);
+                for(let i = 0; i < itemsLocalStorage.length; i++){
+                    fetch(api_url + itemsLocalStorage[i].id)
+                    .then(function(res){
+                        if(res.ok) {
+                            return res.json();
+                        }
+                    })
+                    
+                    .then(function(data){
+                        const article = data;
+                        let totalPriceArticle = itemsLocalStorage[i].quantity*`${article.price}`;
+                        // console.log(`${article.price}`);
+                        totalPrice = totalPrice + totalPriceArticle;
+                        // console.log(totalPrice);
+                        document
+                            .getElementById("totalPrice")
+                            .innerText = totalP.format(totalPrice);
+                        console.log(totalP.format(totalPrice)); //Test positif
+                    
+                    })
+                    
+
                 }
-                document
-                    .getElementById("totalPrice")
-                    .innerText = totalP.format(totalPrice);
-                console.log(totalP.format(totalPrice)); //Test positif
+
+
+                // for(i = 0 ; i < itemsLocalStorage.length ; i++){
+                //     console.log(totalPrice);
+                //     console.log(`${product.price}`);
+                //     x += itemsLocalStorage[i].quantity*`${product.price}`;
+                //     console.log(totalPrice);
+                // }
+                
             }
 
             /**Add an "error message" to the first name */
@@ -284,53 +307,6 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
                 });
             }
 
-            //En essais
-            // function inputChanged(){
-            //     var inputQuantity = document.getElementsByClassName("itemQuantity");
-            //         var input = inputQuantity[i];
-            //         // console.log(input);
-            //         input.addEventListener('change', function(e) {  
-            //             var value = e.target.value;
-            //             console.log(value);
-            //             // var inputQuantity = document.getElementsByClassName("itemQuantity");
-            //             // var input = inputQuantity[i];
-            //             console.log(input);
-            //             input.setAttribute("value",`${value}`);
-            //             // localStorage.setItem("item", JSON.stringify(itemsLocalStorage));
-            //             input.getAttribute("value");
-            //             // console.log(input);
-            //             var itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
-            //             console.log(itemsLocalStorage);
-            //             // itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
-            //             // itemsLocalStorage[i].quantity = value;
-            //             // itemsLocalStorage[i].quantity; //Test Négatif
-            //             // console.log(quantity);//Test Négatif
-            //             // itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);//A essayer
-            //             // var productQty = parseInt(document.getElementById("quantity").value);//A essayer
-            //         });
-            //         localStorage.setItem("item", JSON.stringify(itemsLocalStorage));
-            // }
-
-
-            //En essais
-            // function inputChanged(e){
-            //     var quantity = e.target.value;
-            //     var inputQuantity = document.getElementsByClassName("itemQuantity");
-            //     var input = inputQuantity[i];
-            //     input.setAttribute("value", `${quantity}`);
-            //     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
-            //     itemsLocalStorage[i].quantity = quantity;
-            //     localStorage.setItem("item", JSON.stringify(itemsLocalStorage[i].quantity)); 
-                
-                // var input = itemsLocalStorage[i].quantity;
-                // console.log(itemsLocalStorage.length);
-                // input.addEventListener('change', function(e) {  
-                //     var value = e.target.value;
-                //     input.setAttribute("value",`${value}`);
-                // });
-                // localStorage.setItem("item", JSON.stringify(itemsLocalStorage));
-                // document.location.reload();
-            // }
 
             //En essais
             function formOrderClicked(){
@@ -399,8 +375,8 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
 
             //En essais
             function firstNameValidated(){
-                var firstName = document.getElementById("firstName");
-                var maskFirstName = /[A-Za-z]/;
+                let firstName = document.getElementById("firstName");
+                let maskFirstName = /[A-Za-z]/;
                 console.log(firstName.value);
                 if(maskFirstName.test(firstName.value) == false){
                     document.getElementById("firstNameErrorMsg")
@@ -414,8 +390,8 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
 
             //En essais
             function lastNameValidated(){
-                var lastName = document.getElementById("lastName");
-                var maskLastName = /[A-Za-z\-]/gi;
+                let lastName = document.getElementById("lastName");
+                let maskLastName = /[A-Za-z\-]/gi;
                 console.log(lastName.value);
                 if(firstName.value != maskLastName){
                     document.getElementById("lastNameErrorMsg")
@@ -428,8 +404,8 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
             
             //En essais
             function addressValidated(){
-                var address = document.getElementById("address");
-                var mask1 = /^[0-9]{1,}[A-Za-z\-\._\W\s][^@~&%]/g;
+                let address = document.getElementById("address");
+                let mask1 = /^[0-9]{1,}[A-Za-z\-\._\W\s][^@~&%]/g;
                 console.log(address.value);
                 if(mask1.test(address.value) == false){
                     document.getElementById("addressErrorMsg")
@@ -442,8 +418,8 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
 
             //En essais
             function cityValidated(){
-                var city = document.getElementById("city");
-                var mask1 = /[A-Za-z\-][^@~&%]/g;
+                let city = document.getElementById("city");
+                let mask1 = /[A-Za-z\-][^@~&%]/g;
                 console.log(city.value);
                 if(mask1.test(city.value) == false){
                     document.getElementById("cityErrorMsg")
@@ -456,8 +432,8 @@ for(var i = 0 ; i < itemsLocalStorage.length ; i++){
 
             //En essais
             function emailValidated(){
-                var email = document.getElementById("email");
-                var mask1 = /[A-Za-z\-@]/g;
+                let email = document.getElementById("email");
+                let mask1 = /[A-Za-z\-@]/g;
                 console.log(email.value);
                 if(mask1.test(email.value) == false){
                     document.getElementById("emailErrorMsg")
