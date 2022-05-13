@@ -312,7 +312,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             }
 
 
-            //En essais
+            /**Function allowing the click of the command to be able to save a "contact" object in the "LocalStorage" in addition to the product table. */
             function formOrderClicked(){
                 const orderButton = document.getElementById("order");
                 const orderInput = orderButton.closest("#order");
@@ -329,7 +329,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     this.email = email;
                 }
             }
-
+            /**Function to validate the form thanks to the unit checks of each function concerning each input. */
             function formValidated(){
                     // var orderClicked = e.target;
                 try{
@@ -378,7 +378,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 });
             }
 
-            //En essais
+            /**Function to validate the first name of the form with a RegEx */
             function firstNameValidated(){
                 let firstName = document.getElementById("firstName");
                 let maskFirstName = /[A-Za-z]/g;
@@ -395,7 +395,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     
             }
 
-            //En essais
+            /**Function to validate the form user’s last name with a RegEx. */
             function lastNameValidated(){
                 let lastName = document.getElementById("lastName");
                 let maskLastName = /[A-Za-z\-]/gi;
@@ -411,7 +411,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 }
             }
             
-            //En essais
+            /**Function to validate the user address of the form with a RegEx. */
             function addressValidated(){
                 let address = document.getElementById("address");
                 let mask1 = /^[0-9]{1,}[A-Za-z\-\._\W\s][^@~&%]/g;
@@ -427,7 +427,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 }
             }
 
-            //En essais
+            /**Function to validate the city of the user of the form with a RegEx. */
             function cityValidated(){
                 let city = document.getElementById("city");
                 let mask1 = /[A-Za-z\-][^@~&%]/g;
@@ -443,7 +443,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 }
             }
 
-            //En essais
+            /**Function to validate the email of the user of the form with a RegEx. */
             function emailValidated(){
                 let email = document.getElementById("email");
                 let mask1 = /[A-Za-z0-9\-]@[a-z\.]/g;
