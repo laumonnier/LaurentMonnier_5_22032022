@@ -55,13 +55,17 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             addDeleteItemPargrph(i);
             addTotalQuantity();
             updateTotalPrice();
-            
+            // localStorage.clear();
             // changeInQuantity(i);
             inputChanged(i);
             articleRemoved(i);
 
             /**Added functionality for error messages when user enters data into form */
-            // formOrderClicked();
+
+            console.log(itemsLocalStorage);
+            formOrderClicked();
+            let contact = JSON.parse(localStorage.getItem("contact"));
+            console.log(contact);
             // firstNameValidated();
             // lastNameValidated();
             // addressValidated();
@@ -337,24 +341,20 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     if((firstNameValidated()||lastNameValidated()||addressValidated()||cityValidated()||emailValidated()) == false){
                         formOrderClicked();
                     }else{
-                        var contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
+                        let contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
                         console.log(contact);
-                        itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
-                        console.log(itemsLocalStorage);
+                        localStorage.setItem("contact", JSON.stringify(contact));
+                        console.log(contact.length);
+                        contact = JSON.parse(localStorage.getItem("contact"));
+                        console.log(contact);
                     }
-                    
-                    localStorage.setItem('contact', JSON.stringify(itemsLocalStorage));
-                    // itemsLocalStorage[i].remove();
-                //     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
-                //     itemsLocalStorage[i].quantity = parseInt(`${value}`);
-                //     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-                    addTotalQuantity();//ok
-                    updateTotalPrice();//ok
+                    // localStorage.setItem('contact', JSON.stringify(contactLocalStorage));
+                    // contactLocalStorage[i].remove();
+                //     contactLocalStorage[i].quantity = parseInt(contactLocalStorage[i].quantity);
+                //     contactLocalStorage[i].quantity = parseInt(`${value}`);
+                //     localStorage.setItem('contact', JSON.stringify(contacsLocalStorage));
                 } catch (err){
-                    alert("Une erreur est survenue sur la fonction formValidated!!!");
-                    document.location.reload();
-
-
+                    "Une erreur est survenue sur la fonction formValidated!!!";                    
                 }
 
             }
@@ -381,13 +381,15 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             //En essais
             function firstNameValidated(){
                 let firstName = document.getElementById("firstName");
-                let maskFirstName = /[A-Za-z]/;
+                let maskFirstName = /[A-Za-z]/g;
                 console.log(firstName.value);
                 if(maskFirstName.test(firstName.value) == false){
                     document.getElementById("firstNameErrorMsg")
                             .innerHTML = "SVP, entrez un Prénom valide !!!";
                     return false;
                 }else{
+                    document.getElementById("firstNameErrorMsg")
+                            .innerHTML = "";
                     return firstName.value[0].toUpperCase() + firstName.value.slice(1);
                 }
                     
@@ -398,11 +400,13 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 let lastName = document.getElementById("lastName");
                 let maskLastName = /[A-Za-z\-]/gi;
                 console.log(lastName.value);
-                if(firstName.value != maskLastName){
+                if(maskLastName.test(lastName.value) == false){
                     document.getElementById("lastNameErrorMsg")
                             .innerHTML = "SVP, entrez un Nom de Famille valide !!!";
                     return false;
                 }else{
+                    document.getElementById("lastNameErrorMsg")
+                            .innerHTML = "";
                     return lastName.value.toUpperCase();
                 }
             }
@@ -414,9 +418,11 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 console.log(address.value);
                 if(mask1.test(address.value) == false){
                     document.getElementById("addressErrorMsg")
-                            .innerHTML = "SVP, entrez une Adresse valide (avec un numéro de rue ou impasse au début)!!!";
+                            .innerHTML = "SVP, entrez une Adresse valide (avec rue ou impasse)!!!";
                     return false;
                 }else{
+                    document.getElementById("addressErrorMsg")
+                            .innerHTML = "";
                     return address.value;
                 }
             }
@@ -431,6 +437,8 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                             .innerHTML = "SVP, entrez une Ville valide !!!";
                     return false;
                 }else{
+                    document.getElementById("cityErrorMsg")
+                            .innerHTML = "";
                     return city.value;
                 }
             }
@@ -438,16 +446,20 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             //En essais
             function emailValidated(){
                 let email = document.getElementById("email");
-                let mask1 = /[A-Za-z\-@]/g;
+                let mask1 = /[A-Za-z0-9\-]@[a-z\.]/g;
                 console.log(email.value);
                 if(mask1.test(email.value) == false){
                     document.getElementById("emailErrorMsg")
                             .innerHTML = "SVP, entrez un email valide (n'oubliez pas le '@') !!!";
                     return false;
                 }else{
+                    document.getElementById("emailErrorMsg")
+                            .innerHTML = "";
                     return email.value;
                 }
             }
+
+            
             
         })
         .catch(function(err){
