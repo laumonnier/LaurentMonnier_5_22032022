@@ -1,4 +1,5 @@
 const api_url = 'http://localhost:3000/api/products/';
+const api_url1 = 'http://localhost:3000/api/order/';
 let itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
 console.log(itemsLocalStorage); //Test positif
 
@@ -59,13 +60,14 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             // changeInQuantity(i);
             inputChanged(i);
             articleRemoved(i);
-
+            // console.log(localStorage);
             /**Added functionality for error messages when user enters data into form */
 
-            console.log(itemsLocalStorage);
+            // console.log(itemsLocalStorage);
             formOrderClicked();
-            let contact = JSON.parse(localStorage.getItem("contact"));
-            console.log(contact);
+            // let contact = JSON.parse(localStorage.getItem("contact"));
+            // console.log(contact);
+    
             // firstNameValidated();
             // lastNameValidated();
             // addressValidated();
@@ -240,7 +242,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                         document
                             .getElementById("totalPrice")
                             .innerText = totalP.format(totalPrice);
-                        console.log(totalP.format(totalPrice)); //Test positif
+                        // console.log(totalP.format(totalPrice)); //Test positif
                     
                     })
                     
@@ -312,14 +314,6 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             }
 
 
-            /**Function allowing the click of the command to be able to save a "contact" object in the "LocalStorage" in addition to the product table. */
-            function formOrderClicked(){
-                const orderButton = document.getElementById("order");
-                const orderInput = orderButton.closest("#order");
-                console.log(orderInput);
-                orderInput.addEventListener('click', formValidated);
-            }
-
             class Contact {
                 constructor(firstName, lastName, address, city, email){
                     this.firstName = firstName;
@@ -329,6 +323,15 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     this.email = email;
                 }
             }
+
+            /**Function allowing the click of the command to be able to save a "contact" object in the "LocalStorage" in addition to the product table. */
+            function formOrderClicked(){
+                const orderButton = document.getElementById("order");
+                const orderInput = orderButton.closest("#order");
+                console.log(orderInput);
+                orderInput.addEventListener('click', formValidated) 
+            }
+            window.localStorage;
             /**Function to validate the form thanks to the unit checks of each function concerning each input. */
             function formValidated(){
                     // var orderClicked = e.target;
@@ -339,14 +342,26 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     cityValidated();
                     emailValidated();
                     if((firstNameValidated()||lastNameValidated()||addressValidated()||cityValidated()||emailValidated()) == false){
+                        
                         formOrderClicked();
                     }else{
+                        let itemsArray = itemsLocalStorage;
                         let contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
                         console.log(contact);
                         localStorage.setItem("contact", JSON.stringify(contact));
                         console.log(contact.length);
                         contact = JSON.parse(localStorage.getItem("contact"));
                         console.log(contact);
+                        console.log(localStorage);
+                        
+
+                        postForm(api_url1, {localStorage})
+                            .then(data => {
+                                console.log(data);
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
                     }
                     // localStorage.setItem('contact', JSON.stringify(contactLocalStorage));
                     // contactLocalStorage[i].remove();
@@ -354,29 +369,50 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 //     contactLocalStorage[i].quantity = parseInt(`${value}`);
                 //     localStorage.setItem('contact', JSON.stringify(contacsLocalStorage));
                 } catch (err){
-                    "Une erreur est survenue sur la fonction formValidated!!!";                    
-                }
+                    "Une erreur est survenue sur la fonction formValidated!!!";
+                }                    
+                    
+            }
 
+
+            //En essais
+            async function postForm(url, data) {
+                const response = await fetch(url, {
+                    method : "POST",
+                    // mode : "cors",
+                    // cache : "no-cache",
+                    // credentials : "same-origin",
+                    headers : {
+                        "Accept" : "application/json",
+                        "Content-Type" : "application/json"
+                    },
+                    // redirect : "follow",
+                    // referrerPolicy : "no-referrer",
+                    body : JSON.stringify(data),        
+                });
+                if(response.ok){
+                    return response.json();
+                }
             }
             
             //En essais
-            function firstameValidated(){
-                const firstName = document.getElementById("order");
-                const input = firstName.closest("#order");
-                console.log(input);
-                input.addEventListener('click', function(e) {
-                    var value = e.target;
-                    console.log(value);//Test 
-                    input.setAttribute("value",`${value}`);
-                    console.log(input);//Test 
-                    console.log();//Test 
+            // function firstameValidated(){
+            //     const firstName = document.getElementById("order");
+            //     const input = firstName.closest("#order");
+            //     console.log(input);
+            //     input.addEventListener('click', function(e) {
+            //         var value = e.target;
+            //         console.log(value);//Test 
+            //         input.setAttribute("value",`${value}`);
+            //         console.log(input);//Test 
+            //         console.log();//Test 
                     // itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
                     // itemsLocalStorage[i].quantity = parseInt(`${value}`);
                     // localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
                     // addTotalQuantity();
                     // updateTotalPrice();
-                });
-            }
+            //     });
+            // }
 
             /**Function to validate the first name of the form with a RegEx */
             function firstNameValidated(){
@@ -390,7 +426,9 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 }else{
                     document.getElementById("firstNameErrorMsg")
                             .innerHTML = "";
-                    return firstName.value[0].toUpperCase() + firstName.value.slice(1);
+                    return true;
+                    
+                    return firstName.value[0].toUpperCase() + firstName.value.slice(1);//A voir
                 }
                     
             }
@@ -407,14 +445,16 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 }else{
                     document.getElementById("lastNameErrorMsg")
                             .innerHTML = "";
-                    return lastName.value.toUpperCase();
+                    return true;
+
+                    return lastName.value.toUpperCase();//A voir
                 }
             }
             
             /**Function to validate the user address of the form with a RegEx. */
             function addressValidated(){
                 let address = document.getElementById("address");
-                let mask1 = /^[0-9]{1,}[A-Za-z\-\._\W\s][^@~&%]/g;
+                let mask1 = /[\w-.]/g;
                 console.log(address.value);
                 if(mask1.test(address.value) == false){
                     document.getElementById("addressErrorMsg")
@@ -423,7 +463,9 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 }else{
                     document.getElementById("addressErrorMsg")
                             .innerHTML = "";
-                    return address.value;
+                    return true;
+
+                    return address.value;//A voir
                 }
             }
 
@@ -439,14 +481,16 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 }else{
                     document.getElementById("cityErrorMsg")
                             .innerHTML = "";
-                    return city.value;
+                    return true;
+
+                    return city.value;//A voir
                 }
             }
 
             /**Function to validate the email of the user of the form with a RegEx. */
             function emailValidated(){
                 let email = document.getElementById("email");
-                let mask1 = /[A-Za-z0-9\-]@[a-z\.]/g;
+                let mask1 = /^([\w-.\-]+)@(([a-z]+\.)+)([a-z]{2,4})$/g;
                 console.log(email.value);
                 if(mask1.test(email.value) == false){
                     document.getElementById("emailErrorMsg")
@@ -455,10 +499,14 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 }else{
                     document.getElementById("emailErrorMsg")
                             .innerHTML = "";
-                    return email.value;
+                    return true;
+                    
+                    return email.value;//A voir
                 }
             }
-
+                // contact = JSON.parse(localStorage.getItem("contact"));
+                
+            
             
             
         })
