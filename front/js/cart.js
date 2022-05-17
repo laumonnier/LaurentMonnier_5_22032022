@@ -322,8 +322,12 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     this.city = city;
                     this.email = email;
                 }
-            }
 
+                // static emptyMessage(){
+                //         alert("Vous n'avez pas remplis tous les champs du Formulaire !!!");
+                //     }
+            }
+            
             /**Function allowing the click of the command to be able to save a "contact" object in the "LocalStorage" in addition to the product table. */
             function formOrderClicked(){
                 const orderButton = document.getElementById("order");
@@ -369,13 +373,8 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                             .catch(error => {
                                 console.error('Error:', error);
                             });
-                    // localStorage.setItem('contact', JSON.stringify(contactLocalStorage));
-                    // contactLocalStorage[i].remove();
-                //     contactLocalStorage[i].quantity = parseInt(contactLocalStorage[i].quantity);
-                //     contactLocalStorage[i].quantity = parseInt(`${value}`);
-                //     localStorage.setItem('contact', JSON.stringify(contacsLocalStorage));
+            
                     }else{
-                        // alert("Une ou plusieurs données de votre formulaire est false !!!")
                         console.log("Ca ne va pas !!!")
                         // addTotalQuantity();//ok
                         // updateTotalPrice();//ok
@@ -405,41 +404,34 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 });
             }
             
-            //En essais
-            // function firstameValidated(){
-            //     const firstName = document.getElementById("order");
-            //     const input = firstName.closest("#order");
-            //     console.log(input);
-            //     input.addEventListener('click', function(e) {
-            //         var value = e.target;
-            //         console.log(value);//Test 
-            //         input.setAttribute("value",`${value}`);
-            //         console.log(input);//Test 
-            //         console.log();//Test 
-                    // itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
-                    // itemsLocalStorage[i].quantity = parseInt(`${value}`);
-                    // localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-                    // addTotalQuantity();
-                    // updateTotalPrice();
-            //     });
-            // }
+            function controlField(mask, field, fieldName, text, text2){
+                if(mask.test(field.value)){
+                    document.getElementById(fieldName+"ErrorMsg")
+                            .innerHTML = "";
+                    console.log("error")
+                    return true;
+                }else{
+                    document.getElementById(fieldName+"ErrorMsg")
+                            .innerHTML = "SVP, entrez "+ text +" valide "+ text2 +"!!!";
+                    return false;
+                }
+            }
+
+            function emptyField(value, text){
+                if (value === ""){
+                    document.getElementById(text+"ErrorMsg")
+                            .innerHTML = "ATTENTION, vous avez oubliez d'entrer ce champ !!!";
+                    return false;
+                }
+            }
 
             /**Function to validate the first name of the form with a RegEx */
             function firstNameControlled(){
                 let firstName = document.getElementById("firstName");
                 let maskFirstName = /[A-Za-z]/g;
                 // console.log(firstName.value);
-                if(maskFirstName.test(firstName.value)){
-                    document.getElementById("firstNameErrorMsg")
-                            .innerHTML = "";
-                    console.log("Cou1")
-                    return true;
-                }else{
-                    document.getElementById("firstNameErrorMsg")
-                            .innerHTML = "SVP, entrez un Prénom valide !!!";
-                    return false;
-                }
-                    
+                controlField(maskFirstName, firstName, "firstName", "un prénom", "");
+                emptyField(firstName.value, "firstName");    
             }
 
             function firstNameValidated(){
@@ -453,16 +445,8 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 let lastName = document.getElementById("lastName");
                 let maskLastName = /[A-Za-z\-]/gi;
                 // console.log(lastName.value);
-                if(maskLastName.test(lastName.value)){
-                    document.getElementById("lastNameErrorMsg")
-                            .innerHTML = "";
-                    console.log("Coucou2")
-                    return true;
-                }else{
-                    document.getElementById("lastNameErrorMsg")
-                            .innerHTML = "SVP, entrez un Nom de Famille valide !!!";
-                    return false;
-                }
+                controlField(maskLastName, lastName, "lastName", "un Nom de Famille", "");
+                emptyField(lastName.value, "lastName");    
             }
 
             function lastNameValidated(){
@@ -474,18 +458,10 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             /**Function to validate the user address of the form with a RegEx. */
             function addressControlled(){
                 let address = document.getElementById("address");
-                let mask1 = /[\w-.]/g;
+                let maskAddress = /[\w-.]/g;
                 // console.log(address.value);
-                if(mask1.test(address.value)){
-                    document.getElementById("addressErrorMsg")
-                            .innerHTML = "";
-                    console.log("Coucoucou3")
-                    return true;
-                }else{
-                    document.getElementById("addressErrorMsg")
-                            .innerHTML = "SVP, entrez une Adresse valide (avec rue ou impasse)!!!";
-                    return false;
-                }
+                controlField(maskAddress, address, "address", "une adresse", "(avec rue ou impasse)");
+                emptyField(address.value, "address");
             }
 
             function addressValidated(){
@@ -497,18 +473,10 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             /**Function to validate the city of the user of the form with a RegEx. */
             function cityControlled(){
                 let city = document.getElementById("city");
-                let mask1 = /[A-Za-z\-][^@~&%]/g;
+                let maskCity = /[A-Za-z\-][^@~&%]/g;
                 // console.log(city.value);
-                if(mask1.test(city.value)){
-                    document.getElementById("cityErrorMsg")
-                            .innerHTML = "";
-                    console.log("CouCouCouCou4")
-                    return true;
-                }else{
-                    document.getElementById("cityErrorMsg")
-                            .innerHTML = "SVP, entrez une Ville valide !!!";
-                    return false;
-                }
+                controlField(maskCity, city, "city", "une Ville", "");
+                emptyField(city.value, "city");
             }
 
             function cityValidated(){
@@ -520,18 +488,10 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             /**Function to validate the email of the user of the form with a RegEx. */
             function emailControlled(){
                 let email = document.getElementById("email");
-                let mask1 = /^([\w-.\-]+)@(([a-z]+\.)+)([a-z]{2,4})$/g;
+                let maskEmail = /^([\w-.\-]+)@(([a-z]+\.)+)([a-z]{2,4})$/g;
                 // console.log(email.value);
-                if(mask1.test(email.value)){
-                    document.getElementById("emailErrorMsg")
-                            .innerHTML = "";
-                    console.log("CoucoucoucouCou5")
-                    return true;
-                }else{
-                    document.getElementById("emailErrorMsg")
-                            .innerHTML = "SVP, entrez un email valide (n'oubliez pas le '@') !!!";
-                    return false;
-                }
+                controlField(maskEmail, email, "email", "un email", "(n'oubliez pas le '@')");
+                emptyField(email.value, "email");
             }
                 // contact = JSON.parse(localStorage.getItem("contact"));
             
@@ -539,9 +499,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 let email = document.getElementById("email");
                 console.log(email.value);
                 return email.value;//A voir
-            }
-            
-            
+            }   
             
         })
         .catch(function(err){
@@ -551,5 +509,67 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
     getProduct(i);
 
 }
+
+contact = JSON.parse(localStorage.getItem("contact"));
+console.log(contact);
+console.log(itemsLocalStorage);
+
+const order = {
+    itemsLocalStorage,
+    contact
+}
+
+async function postForm(url, data) {
+    const promise = fetch(url, {
+        method : "POST",
+        mode : "cors",
+        // cache : "no-cache",
+        // credentials : "same-origin",
+        headers : {
+            "Accept" : "application/json",
+            "Content-Type" : "application/json"
+        },
+        // redirect : "follow",
+        // referrerPolicy : "no-referrer",
+        body : JSON.stringify(data),        
+    });
+}
+
+//En essais
+// async function postForm(url, data) {
+//     const promise = fetch(url, {
+//         method : "POST",
+//         mode : "cors",
+//         // cache : "no-cache",
+//         // credentials : "same-origin",
+//         headers : {
+//             // "Accept" : "application/json",
+//             "Content-Type" : "application/json"
+//         },
+//         // redirect : "follow",
+//         // referrerPolicy : "no-referrer",
+//         body : JSON.stringify(data),        
+//     });
+// }
+
+console.log(promise);
+
+
+
+postForm(api_url1, order)//A revoir
+    .then (function(res){
+        if(res.ok){
+            return response.json();
+        }
+    })
+
+    .then (function(data){
+        console.log(data);
+    })
+    
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
 
     
