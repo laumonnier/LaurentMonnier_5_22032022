@@ -3,6 +3,7 @@ const api_url1 = 'http://localhost:3000/api/order';
 let itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
 console.log(itemsLocalStorage); //Test positif
 
+
 for(let i = 0 ; i < itemsLocalStorage.length ; i++){
     
     async function getProduct(i) {
@@ -57,6 +58,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             addTotalQuantity();
             updateTotalPrice();
             // localStorage.clear();
+            // localStorage.removeItem("contact");
             // changeInQuantity(i);
             inputChanged(i);
             articleRemoved(i);
@@ -64,7 +66,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             /**Added functionality for error messages when user enters data into form */
 
             // console.log(itemsLocalStorage);
-            formOrderClicked();
+            // formOrderClicked();
             // let contact = JSON.parse(localStorage.getItem("contact"));
             // console.log(contact);
     
@@ -259,15 +261,6 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 
             }
 
-            /**Add an "error message" to the first name */
-            // function addFirstNameErrorMsge(){
-                
-            //     newPrgphElmt.setAttribute("class", "deleteItem");
-            //     newPrgphElmt.innerText = "Supprimer";
-            //     listElmt("cart__item__content__settings__delete", i, newPrgphElmt);
-            //     console.log(newPrgphElmt); //Test positif
-            // }
-
             //Quelques tests à faire
 
             /**Function allowing the decrementing and incrementing of the products while recording the quantities in the "LocalStorage" */
@@ -311,195 +304,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     updateTotalPrice();//ok
 
                 });
-            }
-
-
-            class Contact {
-                constructor(firstName, lastName, address, city, email){
-                    this.firstName = firstName;
-                    this.lastName = lastName;
-                    this.address = address;
-                    this.city = city;
-                    this.email = email;
-                }
-
-                // static emptyMessage(){
-                //         alert("Vous n'avez pas remplis tous les champs du Formulaire !!!");
-                //     }
-            }
-            
-            /**Function allowing the click of the command to be able to save a "contact" object in the "LocalStorage" in addition to the product table. */
-            function formOrderClicked(){
-                const orderButton = document.getElementById("order");
-                const orderInput = orderButton.closest("#order");
-                console.log(orderInput);
-                orderInput.addEventListener('click', formControlled) 
-            }
-            /**Function to validate the form thanks to the unit checks of each function concerning each input. */
-            function formControlled(){
-                    // var orderClicked = e.target;
-                try{
-                    firstNameControlled();
-                    lastNameControlled();
-                    addressControlled();
-                    cityControlled();
-                    emailControlled();
-                    if((firstNameControlled()&&lastNameControlled()&&addressControlled()&&cityControlled()&&emailControlled()) == true){
-                        let itemsArray = itemsLocalStorage;
-                        let contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
-                        console.log(contact);
-                        localStorage.setItem("contact", JSON.stringify(contact));
-                        // console.log(contact.length);
-                        contact = JSON.parse(localStorage.getItem("contact"));
-                        console.log(contact);
-                        console.log(localStorage);
-                        
-                        const order = {
-                            itemsLocalStorage,
-                            contact
-                        }
-
-                        postForm(api_url1, order)//A revoir
-                            .then (function(res){
-                                if(res.ok){
-                                    return response.json();
-                                }
-                            })
-
-                            .then (function(data){
-                                console.log(data);
-                            })
-                            
-                            .catch(error => {
-                                console.error('Error:', error);
-                            });
-            
-                    }else{
-                        console.log("Ca ne va pas !!!")
-                        // addTotalQuantity();//ok
-                        // updateTotalPrice();//ok
-                        // formOrderClicked();
-                    };
-                } catch (err){
-                    "Une erreur est survenue sur la fonction formValidated!!!";
-                }                    
-                    
-            }
-
-
-            //En essais
-            async function postForm(url, data) {
-                const promise = fetch(url, {
-                    method : "POST",
-                    // mode : "cors",
-                    // cache : "no-cache",
-                    // credentials : "same-origin",
-                    headers : {
-                        // "Accept" : "application/json",
-                        "Content-Type" : "application/json"
-                    },
-                    // redirect : "follow",
-                    // referrerPolicy : "no-referrer",
-                    body : JSON.stringify(data),        
-                });
-            }
-            
-            function controlField(mask, field, fieldName, text, text2){
-                if(mask.test(field.value)){
-                    document.getElementById(fieldName+"ErrorMsg")
-                            .innerHTML = "";
-                    console.log("error")
-                    return true;
-                }else{
-                    document.getElementById(fieldName+"ErrorMsg")
-                            .innerHTML = "SVP, entrez "+ text +" valide "+ text2 +"!!!";
-                    return false;
-                }
-            }
-
-            function emptyField(value, text){
-                if (value === ""){
-                    document.getElementById(text+"ErrorMsg")
-                            .innerHTML = "ATTENTION, vous avez oubliez d'entrer ce champ !!!";
-                    return false;
-                }
-            }
-
-            /**Function to validate the first name of the form with a RegEx */
-            function firstNameControlled(){
-                let firstName = document.getElementById("firstName");
-                let maskFirstName = /[A-Za-z]/g;
-                // console.log(firstName.value);
-                controlField(maskFirstName, firstName, "firstName", "un prénom", "");
-                emptyField(firstName.value, "firstName");    
-            }
-
-            function firstNameValidated(){
-                let firstName = document.getElementById("firstName");
-                console.log(firstName.value);
-                return firstName.value[0].toUpperCase() + firstName.value.slice(1);//A voir
-            }
-
-            /**Function to validate the form user’s last name with a RegEx. */
-            function lastNameControlled(){
-                let lastName = document.getElementById("lastName");
-                let maskLastName = /[A-Za-z\-]/gi;
-                // console.log(lastName.value);
-                controlField(maskLastName, lastName, "lastName", "un Nom de Famille", "");
-                emptyField(lastName.value, "lastName");    
-            }
-
-            function lastNameValidated(){
-                let lastName = document.getElementById("lastName");
-                console.log(lastName.value);
-                return lastName.value.toUpperCase();//A voir
-            }
-            
-            /**Function to validate the user address of the form with a RegEx. */
-            function addressControlled(){
-                let address = document.getElementById("address");
-                let maskAddress = /[\w-.]/g;
-                // console.log(address.value);
-                controlField(maskAddress, address, "address", "une adresse", "(avec rue ou impasse)");
-                emptyField(address.value, "address");
-            }
-
-            function addressValidated(){
-                let address = document.getElementById("address");
-                console.log(address.value);
-                return address.value;//A voir
-            }
-
-            /**Function to validate the city of the user of the form with a RegEx. */
-            function cityControlled(){
-                let city = document.getElementById("city");
-                let maskCity = /[A-Za-z\-][^@~&%]/g;
-                // console.log(city.value);
-                controlField(maskCity, city, "city", "une Ville", "");
-                emptyField(city.value, "city");
-            }
-
-            function cityValidated(){
-                let city = document.getElementById("city");
-                console.log(city.value);
-                return city.value;//A voir
-            }
-
-            /**Function to validate the email of the user of the form with a RegEx. */
-            function emailControlled(){
-                let email = document.getElementById("email");
-                let maskEmail = /^([\w-.\-]+)@(([a-z]+\.)+)([a-z]{2,4})$/g;
-                // console.log(email.value);
-                controlField(maskEmail, email, "email", "un email", "(n'oubliez pas le '@')");
-                emptyField(email.value, "email");
-            }
-                // contact = JSON.parse(localStorage.getItem("contact"));
-            
-            function emailValidated(){
-                let email = document.getElementById("email");
-                console.log(email.value);
-                return email.value;//A voir
-            }   
+            }     
             
         })
         .catch(function(err){
@@ -509,67 +314,286 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
     getProduct(i);
 
 }
+// let jsonObj = {
+//     firstname: "laurent",
+//     lastName: "Monnier",
+//     address: {
+//         country: "France",
+//         postalCode: 44000
+//     }
+// };
 
-contact = JSON.parse(localStorage.getItem("contact"));
-console.log(contact);
-console.log(itemsLocalStorage);
+// let url = 'http://localhost:3000/api/order';
 
-const order = {
-    itemsLocalStorage,
-    contact
-}
+// let headers = {
+//     "Accept": "application/json",
+//     "Content-Type": "application/json"
+// };
 
-async function postForm(url, data) {
-    const promise = fetch(url, {
-        method : "POST",
-        mode : "cors",
-        // cache : "no-cache",
-        // credentials : "same-origin",
-        headers : {
-            "Accept" : "application/json",
-            "Content-Type" : "application/json"
-        },
-        // redirect : "follow",
-        // referrerPolicy : "no-referrer",
-        body : JSON.stringify(data),        
-    });
-}
-
-//En essais
-// async function postForm(url, data) {
-//     const promise = fetch(url, {
-//         method : "POST",
-//         mode : "cors",
-//         // cache : "no-cache",
-//         // credentials : "same-origin",
-//         headers : {
-//             // "Accept" : "application/json",
-//             "Content-Type" : "application/json"
+// async function makePostRequest(url, requestType, headers){
+//     await fetch(
+//         url,
+//         {
+//             method: requestType,
+//             headers: headers,
+//             body: JSON.stringify(jsonObj)
 //         },
-//         // redirect : "follow",
-//         // referrerPolicy : "no-referrer",
-//         body : JSON.stringify(data),        
+//     )
+//     .then(async rawResponse =>{
+//         let content = await rawResponse.json()
+//         console.log(content);
 //     });
 // }
 
-console.log(promise);
+// makePostRequest(url, "POST", headers);
 
 
+// fetch('http://localhost:3000/api/order', {
+//     method : "POST",
+//     // mode : "cors",
+//     // cache : "default",
+//     credentials : "omit",
+//     // headers : {
+//     // "Accept" : "application/json",
+//     // "Content-Type" : "application/json",
+//     // },
+//     // redirect : "follow",
+//     referrerPolicy : "no-referrer-when-downgrade",
+//     body : JSON.stringify(commander)        
+// })
+// .then(res => res.json())
+// .then(data => {
+//     console.log('Success:', data);
+// })
+// .catch(err => {
+//     console.error('There is an error in the request !', err);
+// });
 
-postForm(api_url1, order)//A revoir
-    .then (function(res){
-        if(res.ok){
-            return response.json();
+
+let contact = {firstName: "Laulau", lastName: "MOMO", address: "uoaefbzie"};
+
+
+itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
+const order = {
+    itemsLocalStorage,
+    contact
+};
+console.log(order);
+class Contact {
+    constructor(firstName, lastName, address, city, email){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.email = email;
+    }
+}
+// localStorage.removeItem("contact1");
+formOrderClicked();
+itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
+
+console.log(localStorage);
+    // static emptyMessage(){
+    //         alert("Vous n'avez pas remplis tous les champs du Formulaire !!!");
+    //     }
+
+let firstName = document.getElementById("firstName");
+let lastName = document.getElementById("lastName");
+let address = document.getElementById("address");
+let city = document.getElementById("city");
+let email = document.getElementById("email");
+
+function controlField(mask, field, fieldName, text, text2){
+    if(mask.test(field.value)){
+        document.getElementById(fieldName+"ErrorMsg")
+                .innerHTML = "";
+        // console.log("error")
+        return true;
+    }else{
+        document.getElementById(fieldName+"ErrorMsg")
+                .innerHTML = "SVP, entrez "+ text +" valide "+ text2 +"!!!";
+        return false;
+    }
+}
+
+function emptyField(value, text){
+    if (value === ""){
+        document.getElementById(text+"ErrorMsg")
+                .innerHTML = "ATTENTION, vous avez oubliez d'entrer ce champ !!!";
+        return false;
+    }
+}
+
+/**Function to validate the first name of the form with a RegEx */
+function firstNameControl(){
+    let firstName = document.getElementById("firstName");
+    let maskFirstName = /[A-Za-z]/g;
+    // console.log(firstName.value);
+    controlField(maskFirstName, firstName, "firstName", "un prénom", "");
+    emptyField(firstName.value, "firstName");    
+}
+
+function firstNameValidated(){
+    let firstName = document.getElementById("firstName");
+    console.log(firstName.value);
+    return firstName.value[0].toUpperCase() + firstName.value.slice(1);//A voir
+}
+
+/**Function to validate the form user’s last name with a RegEx. */
+function lastNameControl(){
+    let lastName = document.getElementById("lastName");
+    let maskLastName = /[A-Za-z\-]/gi;
+    // console.log(lastName.value);
+    controlField(maskLastName, lastName, "lastName", "un Nom de Famille", "");
+    emptyField(lastName.value, "lastName");    
+}
+
+function lastNameValidated(){
+    let lastName = document.getElementById("lastName");
+    console.log(lastName.value);
+    return lastName.value.toUpperCase();//A voir
+}
+
+/**Function to validate the user address of the form with a RegEx. */
+function addressControl(){
+    let address = document.getElementById("address");
+    let maskAddress = /[\w-.]/g;
+    // console.log(address.value);
+    controlField(maskAddress, address, "address", "une adresse", "(avec rue ou impasse)");
+    emptyField(address.value, "address");
+}
+
+function addressValidated(){
+    let address = document.getElementById("address");
+    console.log(address.value);
+    return address.value;//A voir
+}
+
+/**Function to validate the city of the user of the form with a RegEx. */
+function cityControl(){
+    let city = document.getElementById("city");
+    let maskCity = /[A-Za-z\-][^@~&%]/g;
+    // console.log(city.value);
+    controlField(maskCity, city, "city", "une Ville", "");
+    emptyField(city.value, "city");
+}
+
+function cityValidated(){
+    let city = document.getElementById("city");
+    console.log(city.value);
+    return city.value;//A voir
+}
+
+/**Function to validate the email of the user of the form with a RegEx. */
+function emailControl(){
+    let email = document.getElementById("email");
+    let maskEmail = /^([\w-.\-]+)@(([a-z]+\.)+)([a-z]{2,4})$/g;
+    // console.log(email.value);
+    controlField(maskEmail, email, "email", "un email", "(n'oubliez pas le '@')");
+    emptyField(email.value, "email");
+}
+    // contact = JSON.parse(localStorage.getItem("contact"));
+
+function emailValidated(){
+    let email = document.getElementById("email");
+    console.log(email.value);
+    return email.value;//A voir
+}
+
+
+/**Function allowing the click of the command to be able to save a "contact" object in the "LocalStorage" in addition to the product table. */
+function formOrderClicked(){
+    const orderButton = document.getElementById("order");
+    const orderInput = orderButton.closest("#order");
+    // console.log(orderInput);
+    orderInput.addEventListener('click', (e) => { 
+    // var orderClicked = e.target; 
+    try{
+        firstNameControl();
+        lastNameControl();
+        addressControl();
+        cityControl();
+        emailControl();
+        if((firstNameControl()&&lastNameControl()&&addressControl()&&cityControl()&&emailControl()) == true){
+            contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
+            console.log(contact);
+            itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
+
+
+            order = {
+                itemsLocalStorage,
+                contact
+            }
+            console.log(order);
+
+            let url_order = 'http://localhost:3000/api/products/order';
+
+            async function postOrder(url_order, requestType){
+                 fetch(
+                    url_order,
+                    {
+                    method: requestType,
+                    headers:{
+                        "Content-Type": "application/json"
+                        },
+                    body: JSON.stringify(order)
+                    },
+                )
+                    .then(res => res.json()
+                    )
+
+                    .then(data => {
+                        console.log(data);
+                        window.location.assign(`file:///D:/GEEK/OpenClassrooms/Formation%20D%C3%A9veloppeur%20Web/P5/Projet5/front/html/confirmation.html?orderInput=${data.orderId}`);
+                    })
+                    
+                    .catch(err => {
+                        console.error('Error', err);
+                    });
+            }
+
+            postOrder(url_order, "POST");
+                
+            console.log(order);
+
+            contact = JSON.parse(localStorage.getItem("contact"));
+            console.log(contact);
+            console.log(itemsLocalStorage);
+        // })
+
+        // .catch(function(err){
+        //     err = console.log("There is an error in the request !");
+        // })
+
         }
-    })
+        if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email") == false){
+            alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
+            
+        }
+        else{
+            console.log("Ca ne va pas !!!");
+        }
+    } catch (err){
+        "Une erreur est survenue sur la fonction formValidated!!!";
+    }
+})                    
+        
+}
 
-    .then (function(data){
-        console.log(data);
-    })
-    
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
-
-    
+const user = {
+    first_name: 'John',
+    last_name: 'Lilly',
+    job_title: 'Software Engineer'
+};
+ 
+const options = {
+    method: 'POST',
+    body: JSON.stringify(order),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+}
+ 
+fetch('https://reqres.in/api/users', options)
+    .then(res => res.json())
+    .then(res => console.log(res));   
