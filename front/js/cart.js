@@ -1,6 +1,7 @@
 const api_url = 'http://localhost:3000/api/products/';
 const api_url1 = 'http://localhost:3000/api/order';
 let itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
+ 
 console.log(itemsLocalStorage); //Test positif
 
 
@@ -66,7 +67,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             /**Added functionality for error messages when user enters data into form */
 
             // console.log(itemsLocalStorage);
-            // formOrderClicked();
+            // formOrderStorage();
             // let contact = JSON.parse(localStorage.getItem("contact"));
             // console.log(contact);
     
@@ -250,14 +251,6 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     
 
                 }
-
-
-                // for(i = 0 ; i < itemsLocalStorage.length ; i++){
-                //     console.log(totalPrice);
-                //     console.log(`${product.price}`);
-                //     x += itemsLocalStorage[i].quantity*`${product.price}`;
-                //     console.log(totalPrice);
-                // }
                 
             }
 
@@ -304,12 +297,12 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     updateTotalPrice();//ok
 
                 });
-            }     
-            
+            }
+   
         })
-        .catch(function(err){
+        .catch(err => {
             err = console.log("There is an error in the request !");
-        })    
+        });    
     }
     getProduct(i);
 
@@ -370,15 +363,11 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
 // });
 
 
-let contact = {firstName: "Laulau", lastName: "MOMO", address: "uoaefbzie"};
+let contact = {};
 
+let order = {};
 
-itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
-const order = {
-    itemsLocalStorage,
-    contact
-};
-console.log(order);
+// console.log(order);
 class Contact {
     constructor(firstName, lastName, address, city, email){
         this.firstName = firstName;
@@ -389,13 +378,14 @@ class Contact {
     }
 }
 // localStorage.removeItem("contact1");
-formOrderClicked();
-itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
 
-console.log(localStorage);
-    // static emptyMessage(){
-    //         alert("Vous n'avez pas remplis tous les champs du Formulaire !!!");
-    //     }
+
+// formOrderStorage();
+formOrderClicked();
+// console.log(localStorage);
+//     // static emptyMessage(){
+//     //         alert("Vous n'avez pas remplis tous les champs du Formulaire !!!");
+//     //     }
 
 let firstName = document.getElementById("firstName");
 let lastName = document.getElementById("lastName");
@@ -428,9 +418,9 @@ function emptyField(value, text){
 function firstNameControl(){
     let firstName = document.getElementById("firstName");
     let maskFirstName = /[A-Za-z]/g;
-    // console.log(firstName.value);
     controlField(maskFirstName, firstName, "firstName", "un prénom", "");
-    emptyField(firstName.value, "firstName");    
+    emptyField(firstName.value, "firstName");
+    // console.log(firstName.value);    
 }
 
 function firstNameValidated(){
@@ -443,9 +433,9 @@ function firstNameValidated(){
 function lastNameControl(){
     let lastName = document.getElementById("lastName");
     let maskLastName = /[A-Za-z\-]/gi;
-    // console.log(lastName.value);
     controlField(maskLastName, lastName, "lastName", "un Nom de Famille", "");
-    emptyField(lastName.value, "lastName");    
+    emptyField(lastName.value, "lastName");
+    // console.log(lastName.value);   
 }
 
 function lastNameValidated(){
@@ -458,9 +448,9 @@ function lastNameValidated(){
 function addressControl(){
     let address = document.getElementById("address");
     let maskAddress = /[\w-.]/g;
-    // console.log(address.value);
     controlField(maskAddress, address, "address", "une adresse", "(avec rue ou impasse)");
     emptyField(address.value, "address");
+    // console.log(address.value);
 }
 
 function addressValidated(){
@@ -473,9 +463,9 @@ function addressValidated(){
 function cityControl(){
     let city = document.getElementById("city");
     let maskCity = /[A-Za-z\-][^@~&%]/g;
-    // console.log(city.value);
     controlField(maskCity, city, "city", "une Ville", "");
     emptyField(city.value, "city");
+    // console.log(city.value);
 }
 
 function cityValidated(){
@@ -488,9 +478,9 @@ function cityValidated(){
 function emailControl(){
     let email = document.getElementById("email");
     let maskEmail = /^([\w-.\-]+)@(([a-z]+\.)+)([a-z]{2,4})$/g;
-    // console.log(email.value);
     controlField(maskEmail, email, "email", "un email", "(n'oubliez pas le '@')");
     emptyField(email.value, "email");
+    // console.log(email.value);
 }
     // contact = JSON.parse(localStorage.getItem("contact"));
 
@@ -500,59 +490,60 @@ function emailValidated(){
     return email.value;//A voir
 }
 
-
+console.log(itemsLocalStorage)
 /**Function allowing the click of the command to be able to save a "contact" object in the "LocalStorage" in addition to the product table. */
 function formOrderClicked(){
-    const orderButton = document.getElementById("order");
-    const orderInput = orderButton.closest("#order");
-    // console.log(orderInput);
-    orderInput.addEventListener('click', (e) => { 
-    // var orderClicked = e.target; 
-    try{
+    let orderButton = document.getElementById("order");
+    // let orderInput = orderButton.closest("#order");
+    console.log(itemsLocalStorage);
+    console.log(contact);
+    orderButton.addEventListener('click', (e) => { 
+    // e.preventDefault(); 
+    // try{
+        console.log(itemsLocalStorage);
+        console.log(contact);
         firstNameControl();
         lastNameControl();
         addressControl();
         cityControl();
         emailControl();
+        console.log(itemsLocalStorage);
+        console.log(contact);
         if((firstNameControl()&&lastNameControl()&&addressControl()&&cityControl()&&emailControl()) == true){
             contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
             console.log(contact);
-            itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
-
-
+            
+            
             order = {
                 itemsLocalStorage,
                 contact
             }
+
             console.log(order);
 
-            let url_order = 'http://localhost:3000/api/products/order';
+            let url_order = 'http://localhost:3000/api/order';
 
-            async function postOrder(url_order, requestType){
-                 fetch(
-                    url_order,
-                    {
-                    method: requestType,
-                    headers:{
-                        "Content-Type": "application/json"
-                        },
-                    body: JSON.stringify(order)
-                    },
-                )
-                    .then(res => res.json()
-                    )
+            const options = {
+                method: 'POST',
+                body: JSON.stringify(order),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
 
+            async function postOrder(url_order, options){
+                fetch(url_order, options)
+                    .then(res => res.json())
                     .then(data => {
                         console.log(data);
                         window.location.assign(`file:///D:/GEEK/OpenClassrooms/Formation%20D%C3%A9veloppeur%20Web/P5/Projet5/front/html/confirmation.html?orderInput=${data.orderId}`);
-                    })
-                    
+                    })   
                     .catch(err => {
                         console.error('Error', err);
                     });
             }
 
-            postOrder(url_order, "POST");
+            postOrder(url_order, options);
                 
             console.log(order);
 
@@ -573,27 +564,125 @@ function formOrderClicked(){
         else{
             console.log("Ca ne va pas !!!");
         }
-    } catch (err){
-        "Une erreur est survenue sur la fonction formValidated!!!";
-    }
+    // } catch (err){
+    //     "Une erreur est survenue sur la fonction formValidated!!!";
+    // }
 })                    
         
 }
 
-const user = {
-    first_name: 'John',
-    last_name: 'Lilly',
-    job_title: 'Software Engineer'
-};
- 
-const options = {
-    method: 'POST',
-    body: JSON.stringify(order),
-    headers: {
-        'Content-Type': 'application/json'
-    }
+function formOrderStorage(){
+    let orderButton = document.getElementById("order");
+    console.log(itemsLocalStorage);
+    console.log(contact);
+    orderButton.addEventListener('click', (e) => {
+        let contact = JSON.parse(localStorage.getItem("contact"));
+        if(contact != null){
+            contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
+            localStorage.setItem("contact",JSON.stringify(contact));
+            // console.log("Hallo"); // Vérifier
+        }
+            // console.log(itemsLocalStorage.length); 
+    // var orderClicked = e.target;
+    // e.preventDefault(); 
+    // try{
+        // console.log(itemsLocalStorage);
+        // console.log(contact);
+        // firstNameControl();
+        // lastNameControl();
+        // addressControl();
+        // cityControl();
+        // emailControl();
+        // console.log(itemsLocalStorage);
+        // console.log(contact);
+        // if((firstNameControl()&&lastNameControl()&&addressControl()&&cityControl()&&emailControl()) == true){
+        //     contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
+
+        //     localStorage.setItem("contact",JSON.stringify(contact));
+        //     console.log(contact);
+        //     console.log(itemsLocalStorage);
+        // }
+        // if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email") == false){
+        //     // alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
+            
+        // }
+        // else{
+        //     console.log("Ca ne va pas !!!");
+        // }
+    })
 }
+// })
+
+// function addContactToStorage(){
+//     const addToCart = document.getElementById("addToCart");
+//     addToCart.addEventListener('click', (e) => {
+//         // event.preventDefault();
+//         // event.stopPropagation();
+//         var productQty = parseInt(document.getElementById("quantity").value);
+//         var productColor = document.getElementById("colors").value;  
+//         var item = {
+//             id : product._id, 
+//             quantity : productQty, 
+//             color : productColor
+//         }
+//         // console.log(item.id);
+//         // console.log(item.quantity);
+//         // console.log(item.color + "color");
+//         if(productColor === ""){
+//             alert('Il faut choisir une couleur SVP !!!');
+//             document.location.reload();
+//             addArticleToCart();
+//         }else{
+//         var itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
+//         // console.log(itemsLocalStorage);
+//         if(itemsLocalStorage != null){
+//             var itemOk = 0;
+//             for (var i = 0; i < itemsLocalStorage.length; i++){
+//                 // console.log(itemsLocalStorage.length);
+//                 // console.log(itemsLocalStorage[i].id);
+//                 // console.log(itemsLocalStorage[i].quantity);
+//                 // console.log(itemsLocalStorage[i].color);
+//                 if ((item.id === itemsLocalStorage[i].id) && (item.color === itemsLocalStorage[i].color)){
+//                     // console.log("Coucou"); //Vérifier
+//                     itemOk++;
+//                     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
+//                     itemsLocalStorage[i].quantity += item.quantity; // Vérifier cette ligne
+//                     // console.log(itemsLocalStorage[i].quantity);
+//                     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
+//                     // console.log(itemsLocalStorage.length);
+//                 }
+//             }    
+//             if(itemOk === 0){
+//                     itemsLocalStorage.push(item);
+//                     // console.log("Hallo"); // Vérifier
+//                     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
+//                     // console.log(itemsLocalStorage.length);
+//             }               
+//         }else{
+//             itemsLocalStorage = [];
+//             itemsLocalStorage.push(item);
+//             // console.log("Laurent");
+//             localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
+//             // console.log(itemsLocalStorage.length);
+//         }
+//         }
+//     })
+// }
+
+// const user = {
+//     first_name: 'John',
+//     last_name: 'Lilly',
+//     job_title: 'Software Engineer'
+// };
  
-fetch('https://reqres.in/api/users', options)
-    .then(res => res.json())
-    .then(res => console.log(res));   
+// const options = {
+//     method: 'POST',
+//     body: JSON.stringify(order),
+//     headers: {
+//         'Content-Type': 'application/json'
+//     }
+// }
+ 
+// fetch('https://reqres.in/api/users', options)
+//     .then(res => res.json())
+//     .then(res => console.log(res));   
