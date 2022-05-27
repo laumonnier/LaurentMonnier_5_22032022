@@ -1,6 +1,7 @@
 /**The "getIdToLocation()" function to return the value of the "id" for the chosen product on the "index.html" page */
 function getIdToLocation(){
     pageLocation = window.location.href;
+    console.log(pageLocation);
     const newUrl = new URL(pageLocation);
     const idProduct = newUrl.searchParams.get("id");
     return idProduct;
