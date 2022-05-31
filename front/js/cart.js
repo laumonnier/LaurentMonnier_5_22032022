@@ -417,13 +417,13 @@ function controlField(mask, field, fieldName, text, text2){
 }
 
 /**General function to indicate that there is an empty field */
-function emptyField(value, text){
+function emptyField(value, fieldName){
     if (value === ""){
-        document.getElementById(text+"ErrorMsg")
+        document.getElementById(fieldName+"ErrorMsg")
                 .innerHTML = "ATTENTION, vous avez oubliez d'entrer ce champ !!!";
-        return true;
-    }else{
         return false;
+    }else{
+        return true;
     }
 }
 
@@ -432,14 +432,12 @@ function firstNameControl(){
     let maskFirstName = /[A-Za-z]/g;
     controlField(maskFirstName, firstName, "firstName", "un prénom", "");
     emptyField(firstName.value, "firstName");
-    if(controlField(maskFirstName, firstName, "firstName", "un prénom", "") == true){
-        if(emptyField(firstName.value, "firstName") == true){
-            return false
+    if(emptyField(firstName.value, "firstName") == true){
+        if(controlField(maskFirstName, firstName, "firstName", "un prénom", "") == true){
+            return true
         }else{
             return false
         }
-    }else{
-        return true
     }
     // console.log(firstName.value);    
 }
@@ -452,17 +450,17 @@ function firstNameValidated(){
 
 /**Function to validate the form user’s last name with a RegEx. */
 function lastNameControl(){
-    let maskLastName = /[A-Za-z\-]/gi;
+    let maskLastName = /[A-Za-z\-]/g;
     controlField(maskLastName, lastName, "lastName", "un Nom de Famille", "");
     emptyField(lastName.value, "lastName");
-    if(controlField(maskLastName, lastName, "lastName", "un Nom de Famille", "") == false){
-        if(emptyField(lastName.value, "lastName") == false){
+    if(emptyField(lastName.value, "lastName") == true){
+        if(controlField(maskLastName, lastName, "lastName", "un Nom de Famille", "")){
             return true
         }else{
             return false
         }
     }else{
-        return true
+        return false
     }
     // console.log(lastName.value);   
 }
@@ -478,14 +476,14 @@ function addressControl(){
     let maskAddress = /[\w-.]/g;
     controlField(maskAddress, address, "address", "une adresse", "(avec rue ou impasse)");
     emptyField(address.value, "address");
-    if(controlField(maskAddress, address, "address", "une adresse", "(avec rue ou impasse)") == false){
-        if(emptyField(address.value, "address") == false){
+    if(emptyField(address.value, "address") == true){
+        if(controlField(maskAddress, address, "address", "une adresse", "(avec rue ou impasse)")){
             return true
         }else{
             return false
         }
     }else{
-        return true
+        return false
     }
     // console.log(address.value);
 }
@@ -501,14 +499,14 @@ function cityControl(){
     let maskCity = /[A-Za-z\-][^@~&%]/g;
     controlField(maskCity, city, "city", "une Ville", "");
     emptyField(city.value, "city");
-    if(controlField(maskCity, city, "city", "une Ville", "") == false){
-        if(emptyField(city.value, "city") == false){
+    if(emptyField(city.value, "city") == true){
+        if(controlField(maskCity, city, "city", "une Ville", "")){
             return true
         }else{
             return false
         }
     }else{
-        return true
+        return false
     }
     // console.log(city.value);
 }
@@ -521,17 +519,17 @@ function cityValidated(){
 
 /**Function to validate the email of the user of the form with a RegEx. */
 function emailControl(){
-    let maskEmail = /^([\w-.\-]+)@(([a-z]+\.)+)([a-z]{2,4})$/g;
+    let maskEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.[a-z]{2,4})$/;
     controlField(maskEmail, email, "email", "un email", "(n'oubliez pas le '@')");
     emptyField(email.value, "email");
-    if(controlField(maskEmail, email, "email", "un email", "(n'oubliez pas le '@')") == false){
-        if(emptyField(email.value, "email") == false){
+    if(emptyField(email.value, "email") == true){
+        if(controlField(maskEmail, email, "email", "un email", "(n'oubliez pas le '@')") == true){
             return true
         }else{
             return false
         }
     }else{
-        return true
+        return false
     }
     // console.log(email.value);
 }
@@ -574,7 +572,8 @@ function formOrderClicked(){
 
 //Fin Tests
 
-    // e.preventDefault(); 
+    e.preventDefault(); 
+    // e.stopPropagation();
     // try{
         // console.log(itemsLocalStorage);
         // console.log(contact);
@@ -611,7 +610,7 @@ function formOrderClicked(){
                                 contact
                             }
 
-                            // console.log(order);
+                            console.log(order); //Test 1
 
                             let url_order = 'http://localhost:3000/api/products/order';
 
@@ -667,13 +666,8 @@ function formOrderClicked(){
             console.log("Erreur 1")
         }
 
-            
-
-
-            
-
 /**Sending a general message to indicate to the user that fields have been forgotten */
-        if(emptyField(firstName.value, "firstName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email")||emptyField(lastName.value, "lastName") == false){
+        if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email") == false){
             alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
             
         }
