@@ -427,6 +427,15 @@ function emptyField(value, fieldName){
     }
 }
 
+/**Sending a general message to indicate to the user that fields have been forgotten */
+function emptyFieldMessage(){
+    if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email")||emptyField(email.value, "email") == false){
+        alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
+    }else{
+    console.log("Ca ne va pas !!!");
+    }
+}
+
 /**Function to validate the first name of the form with a RegEx */
 function firstNameControl(){
     let maskFirstName = /[A-Za-z]/g;
@@ -597,8 +606,7 @@ function formOrderClicked(){
                     if(cityControl() == true){
                         console.log("Salut !!!!")
                         if(emailControl() == true){
-                            console.log("Good morning !!!!!")
-                            
+                            console.log("Good morning !!!!!")    
 /**Validation of the form */
                             contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
                             //             console.log(contact);
@@ -666,14 +674,8 @@ function formOrderClicked(){
             console.log("Erreur 1")
         }
 
-/**Sending a general message to indicate to the user that fields have been forgotten */
-        if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email") == false){
-            alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
+        emptyFieldMessage();
             
-        }
-        else{
-            console.log("Ca ne va pas !!!");
-        }
 //     // } catch (err){
 //     //     "Une erreur est survenue sur la fonction formValidated!!!";
 //     // }
