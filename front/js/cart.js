@@ -1,3 +1,4 @@
+const {v4 : uuidv4} = require('uuid');
 const api_url = 'http://localhost:3000/api/products/';
 const api_url1 = 'http://localhost:3000/api/order';
 let itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
@@ -363,20 +364,15 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
 // });
 
 /**Initialization of variables present in the following functions */
+let url_order = 'http://localhost:3000/api/products/order';
 let contact = {};
 contact = JSON.parse(localStorage.getItem("contact"));
 let contactOther = {};
 let orderProducts = [];
-// storageInObject();
 let order = {};
+let orderButton = document.getElementById("order");
 
-
-// formOrderStorage();
-
-// console.log(localStorage);
-//     // static emptyMessage(){
-//     //         alert("Vous n'avez pas remplis tous les champs du Formulaire !!!");
-//     //     }
+// let orderId = 0;
 
 /**Initialization of variables and removal of variable names present in the following functions */
 let firstName = document.getElementById("firstName");
@@ -390,7 +386,7 @@ let lastNameOrder = newUrl.searchParams.get("lastName");
 let addressOrder = newUrl.searchParams.get("address");
 let cityOrder = newUrl.searchParams.get("city");
 let emailOrder = newUrl.searchParams.get("email");
- 
+
 
 class Contact {
     constructor(firstName, lastName, address, city, email){
@@ -429,10 +425,13 @@ function emptyField(value, fieldName){
 
 /**Sending a general message to indicate to the user that fields have been forgotten */
 function emptyFieldMessage(){
-    if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email")||emptyField(email.value, "email") == false){
+    // if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email") == false){
+    //     alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
+    if((firstName.value == "")||(lastName.value == "")||(address.value == "")||(city.value == "")||(email.value == "")){
         alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
+    
     }else{
-    console.log("Ca ne va pas !!!");
+    console.log("Tout est bon !!!");
     }
 }
 
@@ -552,10 +551,32 @@ function emailValidated(){
 
 console.log(itemsLocalStorage)
 
+
+/**Sending the command with the "POST" method */
+async function postOrder(order){
+    fetch(url_order, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(order)
+    })
+    .then(res => res.json())
+    .then(data => {
+            console.log(data);
+            console.log(orderButton);
+            window.location.href=`./confirmation.html?orderButton=${data.orderId}`;
+            
+    })
+    .catch(err => {
+            console.log (err);
+            alert("Ca ne va pas du tout Mouna !");
+    });
+}
+
 /**Function allowing the click of the command to be able to save a "contact" object in the "LocalStorage" in addition to the product table. */
 function formOrderClicked(){
-    let orderButton = document.getElementById("order");
-    // let orderInput = orderButton.closest("#order");
     console.log(itemsLocalStorage);
     console.log(contact);
     // contact = new Contact(firstNameOrder, lastNameOrder, addressOrder, cityOrder, emailOrder);
@@ -583,9 +604,6 @@ function formOrderClicked(){
 
     e.preventDefault(); 
     // e.stopPropagation();
-    // try{
-        // console.log(itemsLocalStorage);
-        // console.log(contact);
 
 /**Dynamic User Data Controls */
         firstNameControl();
@@ -610,54 +628,26 @@ function formOrderClicked(){
 /**Validation of the form */
                             contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
                             //             console.log(contact);
-                            // contact = new Contact(firstNameOrder, lastNameOrder, addressOrder, cityOrder, emailOrder);
 
                             /**Contents of final order */            
                             order = {
                                 orderProducts,
                                 contact
                             }
-
+                            orderButton = uuidv4();
                             console.log(order); //Test 1
 
-                            let url_order = 'http://localhost:3000/api/products/order';
-
-                            let options = {
-                                method: 'POST',
-                                headers: {
-                                    Accept: 'application/json',
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(order) //Test
-                            }
-
-/**Sending the command with the "POST" method */
-                            async function postOrder(url_order, options){
-                                fetch(url_order, options)
-                                    .then(res => res.json())
-                                    .then(data => {
-                                        console.log(data);
-                                        window.location.href=`./confirmation.html?orderInput=${data.orderId}`;
-                                    })
-                                    .catch(err => {
-                                        console.log (err);
-                                        alert("Ca ne va pas du tout Mouna !");
-                                    });
-                            }
-
-                            postOrder(url_order, options);
-                                
+                            postOrder(order);
+                            
+                            // orderButton.removeAttribute("disabled", "disabled");
+                            // document.getElementById("order").setAttribute("value", "Commander !");
+                            
+                            //Tests
                             console.log(order);
-
                             console.log(contact);
                             console.log(itemsLocalStorage);
-                        // })
-
-                        // .catch(function(err){
-                        //     err = console.log("There is an error in the request !");
-                        // })
-
-                        // }
+                            //Fin Tests
+                    
                         }else{
                             console.log("Erreur 5")
                         }
@@ -675,10 +665,6 @@ function formOrderClicked(){
         }
 
         emptyFieldMessage();
-            
-//     // } catch (err){
-//     //     "Une erreur est survenue sur la fonction formValidated!!!";
-//     // }
     })                    
 
 }
@@ -699,33 +685,32 @@ function storageInArray(){
 }
 
 /**Function to store a key/value in the localStorage (contact/contact) */ //A Revoir
-function formOrderStorage(){
-    // let orderButton = document.getElementById("order");
-    console.log(itemsLocalStorage);
-    console.log(contact);
-    // orderButton.addEventListener('click', (e) => {
-        contact = JSON.parse(localStorage.getItem("contact"));
-        firstNameControl();
-        lastNameControl();
-        addressControl();
-        cityControl();
-        emailControl();
-        if(contact != null||contact == null){
-            if(firstNameControl()&&lastNameControl()&&addressControl()&&cityControl()&&emailControl() == true){
-                contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
-                localStorage.setItem("contact",JSON.stringify(contact));
-                console.log("Hallo"); // Vérifier
-            }
-            if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email") == false){
-                alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
+// function formOrderStorage(){
+//     // let orderButton = document.getElementById("order");
+//     console.log(itemsLocalStorage);
+//     console.log(contact);
+//         contact = JSON.parse(localStorage.getItem("contact"));
+//         firstNameControl();
+//         lastNameControl();
+//         addressControl();
+//         cityControl();
+//         emailControl();
+//         if(contact != null||contact == null){
+//             if(firstNameControl()&&lastNameControl()&&addressControl()&&cityControl()&&emailControl() == true){
+//                 contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
+//                 localStorage.setItem("contact",JSON.stringify(contact));
+//                 console.log("Hallo"); // Vérifier
+//             }
+//             if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email") == false){
+//                 alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
                 
-            }
-            else{
-                console.log("Ca ne va pas !!!");
-            }
-        }
-    // })
-}
+//             }
+//             else{
+//                 console.log("Ca ne va pas !!!");
+//             }
+//         }
+//     // })
+// }
             // console.log(itemsLocalStorage.length); 
     // var orderClicked = e.target;
     // e.preventDefault(); 
