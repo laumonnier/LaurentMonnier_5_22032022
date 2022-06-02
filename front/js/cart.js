@@ -1,4 +1,3 @@
-const {v4 : uuidv4} = require('uuid');
 const api_url = 'http://localhost:3000/api/products/';
 const api_url1 = 'http://localhost:3000/api/order';
 let itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
@@ -371,6 +370,7 @@ let contactOther = {};
 let orderProducts = [];
 let order = {};
 let orderButton = document.getElementById("order");
+let orderButtonId = "";
 
 // let orderId = 0;
 
@@ -551,22 +551,34 @@ function emailValidated(){
 
 console.log(itemsLocalStorage)
 
+function randomNumber(){
+    let numbLet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let randomId = "";
+    for(let i = 0; i < 32; i++){
+        randomId += numbLet[Math.floor(Math.random() * 62)];        
+    }
+    return(randomId);
+}
 
 /**Sending the command with the "POST" method */
 async function postOrder(order){
+    console.log(order);
     fetch(url_order, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(order)
+        body: JSON.stringify(order),
     })
     .then(res => res.json())
     .then(data => {
             console.log(data);
-            console.log(orderButton);
-            window.location.href=`./confirmation.html?orderButton=${data.orderId}`;
+            console.log(data)
+            // data.orderId = "1324567890"; 
+            console.log(data.orderId);
+            console.log(orderButtonId);
+            // window.location.href=`./confirmation.html?orderButton=${data.orderId}`;
             
     })
     .catch(err => {
@@ -631,10 +643,12 @@ function formOrderClicked(){
 
                             /**Contents of final order */            
                             order = {
-                                orderProducts,
-                                contact
-                            }
-                            orderButton = uuidv4();
+                                // contact:{firstName:firstNameValidated(), lastName:lastNameValidated(), address:addressValidated()},
+                                contact,
+                                products:orderProducts,
+                            };
+                            orderButtonId = randomNumber();
+                            console.log(orderButtonId);
                             console.log(order); //Test 1
 
                             postOrder(order);
