@@ -1,8 +1,9 @@
+/**----------------------------Initialization-----------------------------*/
 const api_url = 'http://localhost:3000/api/products/';
 const api_url1 = 'http://localhost:3000/api/order';
 let itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
 
-console.log(itemsLocalStorage); //Test positif
+// console.log(itemsLocalStorage); //Test positif
 
 
 for(let i = 0 ; i < itemsLocalStorage.length ; i++){
@@ -22,8 +23,6 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             console.log(itemsLocalStorage[i].color); //Test positif
             console.log(itemsLocalStorage[i].quantity); //Test positif
             const parentNodeSection =  document.getElementById("cart__items");
-            // var totalPricePerAtcle = itemsLocalStorage[i].quantity*product.price;
-            // console.log(totalPricePerAtcle); //Test positif
             
             // console.log(totalPrice); //Test positif
             //The function retrieves a list of items obtained by their class name
@@ -60,22 +59,9 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
             updateTotalPrice();
             // localStorage.clear();
             // localStorage.removeItem("contact");
-            // changeInQuantity(i);
             inputChanged(i);
             articleRemoved(i);
             // console.log(localStorage);
-            /**Added functionality for error messages when user enters data into form */
-
-            // console.log(itemsLocalStorage);
-            // formOrderStorage();
-            // let contact = JSON.parse(localStorage.getItem("contact"));
-            // console.log(contact);
-    
-            // firstNameValidated();
-            // lastNameValidated();
-            // addressValidated();
-            // cityValidated();
-            // emailValidated();
 
             /**Addition of an element "article" corresponding to an article, and it is in this part that our articles will be added or deleted or modified */
             function addArticleToSection(i){
@@ -84,7 +70,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 newArticleElmt.setAttribute("data-id", `${product._id}`);
                 newArticleElmt.setAttribute("data-color", `${itemsLocalStorage[i].color}`);
                 parentNodeSection.appendChild(newArticleElmt);
-                console.log(newArticleElmt); //Test positif
+                // console.log(newArticleElmt); //Test positif
             }
 
             /**Addition of a "div" element corresponding to the "image" part */
@@ -92,8 +78,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 const newDivElmt = document.createElement("div");
                 newDivElmt.setAttribute("class", "cart__item__img");
                 listElmt("cart__item", i, newDivElmt);
-                // document.getElementById(`product-${i}`).appendChild(newDivElmt);
-                console.log(newDivElmt); //Test positif
+                // console.log(newDivElmt); //Test positif
             } 
 
             /**Added an element "img" to insert the image of the article */
@@ -104,7 +89,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     alt : `${product.altTxt}`
                 })
                 listElmt("cart__item__img", i, newImgElmt);
-                console.log(newImgElmt); //Test positif
+                // console.log(newImgElmt); //Test positif
             }
 
             /**Addition of a "div" element to indicate the "content" part */
@@ -112,8 +97,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 const newDivElmt = document.createElement("div");
                 newDivElmt.setAttribute("class", "cart__item__content");
                 listElmt("cart__item", i, newDivElmt);
-                // document.getElementById(`product-${i}`).appendChild(newDivElmt);
-                console.log(newDivElmt); //Test positif    
+                // console.log(newDivElmt); //Test positif    
             }
 
             /**Addition of a "div" element to indicate the "description" part */
@@ -121,7 +105,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 const newDivElmt = document.createElement("div");
                 newDivElmt.setAttribute("class", "cart__item__content__description");
                 listElmt("cart__item__content", i, newDivElmt);
-                console.log(newDivElmt); //Test positif
+                // console.log(newDivElmt); //Test positif
             }
 
             /**Addition of an element "h2" to indicate the title of the article */
@@ -129,7 +113,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 const newTitleElmt = document.createElement("h2");
                 newTitleElmt.innerText = `${product.name}`;
                 listElmt("cart__item__content__description", i, newTitleElmt);
-                console.log(newTitleElmt); //Test positif
+                // console.log(newTitleElmt); //Test positif
             }
 
             /**Add a "p" element to indicate the color of the article */
@@ -137,7 +121,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 const newPrgphElmt = document.createElement("p");
                 newPrgphElmt.innerText = `${itemsLocalStorage[i].color}`;
                 listElmt("cart__item__content__description", i, newPrgphElmt);
-                console.log(newPrgphElmt); //Test positif
+                // console.log(newPrgphElmt); //Test positif
             }
 
             /**Add a "p" element to indicate the price of the item */
@@ -145,7 +129,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 const newPrgphElmt = document.createElement("p");
                 newPrgphElmt.innerText = `${product.price}` + " €";
                 listElmt("cart__item__content__description", i, newPrgphElmt);
-                console.log(newPrgphElmt); //Test positif
+                // console.log(newPrgphElmt); //Test positif
             }
 
             /**Addition of a "div" element to indicate the part corresponding to "settings" */
@@ -154,7 +138,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 const newDivElmt = document.createElement("div");
                 newDivElmt.setAttribute("class", "cart__item__content__settings");
                 listElmt("cart__item__content", nbr, newDivElmt);
-                console.log(newDivElmt); //Test positif
+                // console.log(newDivElmt); //Test positif
             }
 
             /**Addition of a "div" element to indicate things in relation to the quantity */
@@ -162,7 +146,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 const newDivElmt = document.createElement("div");
                 newDivElmt.setAttribute("class", "cart__item__content__settings__quantity");
                 listElmt("cart__item__content__settings", i, newDivElmt);
-                console.log(newDivElmt); //Test positif
+                // console.log(newDivElmt); //Test positif
             }
 
             /**Addition of a "p" element concerning the quantity */
@@ -170,7 +154,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 const newPrgphElmt = document.createElement("p");
                 newPrgphElmt.innerText = "Qté : ";
                 listElmt("cart__item__content__settings__quantity", i, newPrgphElmt);
-                console.log(newPrgphElmt); //Test positif
+                // console.log(newPrgphElmt); //Test positif
             }
 
             /**Add an "input" element to display the quantity */
@@ -183,21 +167,15 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 newInputElmt.setAttribute("max", "100");
                 newInputElmt.setAttribute("value", `${itemsLocalStorage[i].quantity}`);
                 listElmt("cart__item__content__settings__quantity", i, newInputElmt);
-                console.log(newInputElmt); //Test positif
-                // if(newInputElmt.getAttribute("value") != `${itemsLocalStorage[i].quantity}`){
-                //     newInputElmt.addEventListener('change', inputChanged);
-                // }
+                // console.log(newInputElmt); //Test positif
             }
-
-            // var input = document.getElementsByClassName("itemQuantity")
-
 
             /**Addition of a "div" element to include "settings Delete" */
             function addSettingsDeleteDiv(nbr){
                 const newDivElmt = document.createElement("div");
                 newDivElmt.setAttribute("class", "cart__item__content__settings__delete");
                 listElmt("cart__item__content__settings", nbr, newDivElmt);
-                console.log(newDivElmt); //Test positif
+                // console.log(newDivElmt); //Test positif
             }
 
             /**Add a "p" element to display the term "supprimer" */
@@ -206,7 +184,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 newPrgphElmt.setAttribute("class", "deleteItem");
                 newPrgphElmt.innerText = "Supprimer";
                 listElmt("cart__item__content__settings__delete", i, newPrgphElmt);
-                console.log(newPrgphElmt); //Test positif
+                // console.log(newPrgphElmt); //Test positif
             }
             
             /**Addition of the "total quantity" for article */
@@ -218,16 +196,13 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 document
                     .getElementById("totalQuantity")
                     .innerText = totalQuantity;
-                // return totalQuantity
-                console.log(totalQuantity); //Test positif
+                // console.log(totalQuantity); //Test positif
             }
 
             /**Addition of the "total price" for all products  */
             function updateTotalPrice(){
                 let totalPrice = 0;
                 let totalP = new Intl.NumberFormat();            
-                // let listArticle = document.getElementsByClassName("cart__item");
-                // console.log(listArticle.length);
                 for(let i = 0; i < itemsLocalStorage.length; i++){
                     fetch(api_url + itemsLocalStorage[i].id)
                     .then(function(res){
@@ -248,13 +223,8 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                         // console.log(totalP.format(totalPrice)); //Test positif
                     
                     })
-                    
-
-                }
-                
+                }   
             }
-
-            //Quelques tests à faire
 
             /**Function allowing the decrementing and incrementing of the products while recording the quantities in the "LocalStorage" */
             function inputChanged(i){
@@ -275,8 +245,6 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                 });
             }
 
-            //En essais
-
             /**Function to delete an item directly in the shopping cart while saving in the "LocalStorage" */
             function articleRemoved(i){
                 const removeElements = document.getElementsByClassName("deleteItem");
@@ -289,13 +257,8 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
                     removeClicked.remove();
                     itemsLocalStorage.splice(i,1);
                     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-                    // itemsLocalStorage[i].remove();
-                //     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
-                //     itemsLocalStorage[i].quantity = parseInt(`${value}`);
-                //     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
                     addTotalQuantity();//ok
                     updateTotalPrice();//ok
-
                 });
             }
    
@@ -307,60 +270,7 @@ for(let i = 0 ; i < itemsLocalStorage.length ; i++){
     getProduct(i);
 
 }
-// let jsonObj = {
-//     firstname: "laurent",
-//     lastName: "Monnier",
-//     address: {
-//         country: "France",
-//         postalCode: 44000
-//     }
-// };
-
-// let url = 'http://localhost:3000/api/order';
-
-// let headers = {
-//     "Accept": "application/json",
-//     "Content-Type": "application/json"
-// };
-
-// async function makePostRequest(url, requestType, headers){
-//     await fetch(
-//         url,
-//         {
-//             method: requestType,
-//             headers: headers,
-//             body: JSON.stringify(jsonObj)
-//         },
-//     )
-//     .then(async rawResponse =>{
-//         let content = await rawResponse.json()
-//         console.log(content);
-//     });
-// }
-
-// makePostRequest(url, "POST", headers);
-
-
-// fetch('http://localhost:3000/api/order', {
-//     method : "POST",
-//     // mode : "cors",
-//     // cache : "default",
-//     credentials : "omit",
-//     // headers : {
-//     // "Accept" : "application/json",
-//     // "Content-Type" : "application/json",
-//     // },
-//     // redirect : "follow",
-//     referrerPolicy : "no-referrer-when-downgrade",
-//     body : JSON.stringify(commander)        
-// })
-// .then(res => res.json())
-// .then(data => {
-//     console.log('Success:', data);
-// })
-// .catch(err => {
-//     console.error('There is an error in the request !', err);
-// });
+/**----------------------------Initialization-----------------------------*/
 
 /**Initialization of variables present in the following functions */
 let url_order = 'http://localhost:3000/api/products/order';
@@ -371,8 +281,6 @@ let orderProducts = [];
 let order = {};
 let orderButton = document.getElementById("order");
 let orderButtonId = "";
-
-// let orderId = 0;
 
 /**Initialization of variables and removal of variable names present in the following functions */
 let firstName = document.getElementById("firstName");
@@ -398,6 +306,9 @@ class Contact {
     }
 }
 formOrderClicked();
+
+/**-----------------------Start generals Field functions------------------------*/
+
 /**General function to control the form field */
 function controlField(mask, field, fieldName, text, text2){
     if(mask.test(field.value)){
@@ -425,16 +336,15 @@ function emptyField(value, fieldName){
 
 /**Sending a general message to indicate to the user that fields have been forgotten */
 function emptyFieldMessage(){
-    // if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email") == false){
-    //     alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
     if((firstName.value == "")||(lastName.value == "")||(address.value == "")||(city.value == "")||(email.value == "")){
         alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
-    
     }else{
     console.log("Tout est bon !!!");
     }
 }
+/**-----------------------End generals Field functions------------------------*/
 
+/**----------------------Start personal Field functions-----------------------*/
 /**Function to validate the first name of the form with a RegEx */
 function firstNameControl(){
     let maskFirstName = /[A-Za-z]/g;
@@ -476,7 +386,7 @@ function lastNameControl(){
 /**Function allowing the final rendering of the lastName once checked */
 function lastNameValidated(){
     console.log(lastName.value);
-    return lastName.value.toUpperCase();//A voir
+    return lastName.value.toUpperCase();
 }
 
 /**Function to validate the user address of the form with a RegEx. */
@@ -499,7 +409,7 @@ function addressControl(){
 /**Function allowing the final rendering of the address once checked */
 function addressValidated(){
     console.log(address.value);
-    return address.value;//A voir
+    return address.value;
 }
 
 /**Function to validate the city of the user of the form with a RegEx. */
@@ -522,7 +432,7 @@ function cityControl(){
 /**Function allowing the final rendering of the city once checked */
 function cityValidated(){
     console.log(city.value);
-    return city.value;//A voir
+    return city.value;
 }
 
 /**Function to validate the email of the user of the form with a RegEx. */
@@ -541,15 +451,15 @@ function emailControl(){
     }
     // console.log(email.value);
 }
-    // contact = JSON.parse(localStorage.getItem("contact"));
 
 /**Function allowing the final rendering of the email once checked */
 function emailValidated(){
     console.log(email.value);
-    return email.value;//A voir
+    return email.value;
 }
+/**----------------------End personal Field functions-----------------------*/
 
-console.log(itemsLocalStorage)
+// console.log(itemsLocalStorage)
 
 function randomNumber(){
     let numbLet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -574,11 +484,10 @@ async function postOrder(order){
     .then(res => res.json())
     .then(data => {
             console.log(data);
-            console.log(data)
-            // data.orderId = "1324567890"; 
             console.log(data.orderId);
-            console.log(orderButtonId);
-            // window.location.href=`./confirmation.html?orderButton=${data.orderId}`;
+            // orderButton= randomNumber(); 
+            // console.log(orderButton);
+            window.location.href=`./confirmation.html?orderId=${data.orderId}`;
             
     })
     .catch(err => {
@@ -591,31 +500,10 @@ async function postOrder(order){
 function formOrderClicked(){
     console.log(itemsLocalStorage);
     console.log(contact);
-    // contact = new Contact(firstNameOrder, lastNameOrder, addressOrder, cityOrder, emailOrder);
-    // console.log(contact);
     orderButton.addEventListener('click', (e) => {
-
-//Tests :
-
-/**Static storage in a variable called "contactOther"
- * Static storage of all assembled products in a array called in a "orderProducts" variable */ 
-    // storageInObject();
+        e.preventDefault();
         // formOrderStorage();
-    storageInArray();
-//     console.log(contactOther);
-    console.log(orderProducts);
-
-/**Static contents of final order */
-    // orderOther = {
-    //     orderProducts,
-    //     contactOther
-    // }
-    // console.log(orderOther);
-
-//Fin Tests
-
-    e.preventDefault(); 
-    // e.stopPropagation();
+        productsInArray();     
 
 /**Dynamic User Data Controls */
         firstNameControl();
@@ -643,12 +531,11 @@ function formOrderClicked(){
 
                             /**Contents of final order */            
                             order = {
-                                // contact:{firstName:firstNameValidated(), lastName:lastNameValidated(), address:addressValidated()},
                                 contact,
                                 products:orderProducts,
                             };
                             orderButtonId = randomNumber();
-                            console.log(orderButtonId);
+                            // console.log(orderButtonId);
                             console.log(order); //Test 1
 
                             postOrder(order);
@@ -689,7 +576,7 @@ function storageInObject(){
     // console.log(contactOther);
 }
 
-function storageInArray(){
+function productsInArray(){
     let products = itemsLocalStorage;
     // console.log(products);
     for(let product of products){
@@ -697,135 +584,4 @@ function storageInArray(){
         orderProducts.push(product.id);
     }
 }
-
-/**Function to store a key/value in the localStorage (contact/contact) */ //A Revoir
-// function formOrderStorage(){
-//     // let orderButton = document.getElementById("order");
-//     console.log(itemsLocalStorage);
-//     console.log(contact);
-//         contact = JSON.parse(localStorage.getItem("contact"));
-//         firstNameControl();
-//         lastNameControl();
-//         addressControl();
-//         cityControl();
-//         emailControl();
-//         if(contact != null||contact == null){
-//             if(firstNameControl()&&lastNameControl()&&addressControl()&&cityControl()&&emailControl() == true){
-//                 contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
-//                 localStorage.setItem("contact",JSON.stringify(contact));
-//                 console.log("Hallo"); // Vérifier
-//             }
-//             if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email") == false){
-//                 alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
-                
-//             }
-//             else{
-//                 console.log("Ca ne va pas !!!");
-//             }
-//         }
-//     // })
-// }
-            // console.log(itemsLocalStorage.length); 
-    // var orderClicked = e.target;
-    // e.preventDefault(); 
-    // try{
-        // console.log(itemsLocalStorage);
-        // console.log(contact);
-        // firstNameControl();
-        // lastNameControl();
-        // addressControl();
-        // cityControl();
-        // emailControl();
-        // console.log(itemsLocalStorage);
-        // console.log(contact);
-        // if((firstNameControl()&&lastNameControl()&&addressControl()&&cityControl()&&emailControl()) == true){
-        //     contact = new Contact(firstNameValidated(), lastNameValidated(), addressValidated(), cityValidated(), emailValidated());
-
-        //     localStorage.setItem("contact",JSON.stringify(contact));
-        //     console.log(contact);
-        //     console.log(itemsLocalStorage);
-        // }
-        // if(emptyField(firstName.value, "firstName")||emptyField(lastName.value, "lastName")||emptyField(address.value, "address")||emptyField(city.value, "city")||emptyField(email.value, "email") == false){
-        //     // alert("ATTENTION! Vous avez oubliez de remplir un ou plusieurs champ(s) du formulaire");
-            
-        // }
-        // else{
-        //     console.log("Ca ne va pas !!!");
-        // }
     
-
-
-
-// function addContactToStorage(){
-//     const addToCart = document.getElementById("addToCart");
-//     addToCart.addEventListener('click', (e) => {
-//         // event.preventDefault();
-//         // event.stopPropagation();
-//         var productQty = parseInt(document.getElementById("quantity").value);
-//         var productColor = document.getElementById("colors").value;  
-//         var item = {
-//             id : product._id, 
-//             quantity : productQty, 
-//             color : productColor
-//         }
-//         // console.log(item.id);
-//         // console.log(item.quantity);
-//         // console.log(item.color + "color");
-//         if(productColor === ""){
-//             alert('Il faut choisir une couleur SVP !!!');
-//             document.location.reload();
-//             addArticleToCart();
-//         }else{
-//         var itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
-//         // console.log(itemsLocalStorage);
-//         if(itemsLocalStorage != null){
-//             var itemOk = 0;
-//             for (var i = 0; i < itemsLocalStorage.length; i++){
-//                 // console.log(itemsLocalStorage.length);
-//                 // console.log(itemsLocalStorage[i].id);
-//                 // console.log(itemsLocalStorage[i].quantity);
-//                 // console.log(itemsLocalStorage[i].color);
-//                 if ((item.id === itemsLocalStorage[i].id) && (item.color === itemsLocalStorage[i].color)){
-//                     // console.log("Coucou"); //Vérifier
-//                     itemOk++;
-//                     itemsLocalStorage[i].quantity = parseInt(itemsLocalStorage[i].quantity);
-//                     itemsLocalStorage[i].quantity += item.quantity; // Vérifier cette ligne
-//                     // console.log(itemsLocalStorage[i].quantity);
-//                     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-//                     // console.log(itemsLocalStorage.length);
-//                 }
-//             }    
-//             if(itemOk === 0){
-//                     itemsLocalStorage.push(item);
-//                     // console.log("Hallo"); // Vérifier
-//                     localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-//                     // console.log(itemsLocalStorage.length);
-//             }               
-//         }else{
-//             itemsLocalStorage = [];
-//             itemsLocalStorage.push(item);
-//             // console.log("Laurent");
-//             localStorage.setItem('item', JSON.stringify(itemsLocalStorage));
-//             // console.log(itemsLocalStorage.length);
-//         }
-//         }
-//     })
-// }
-
-// const user = {
-//     first_name: 'John',
-//     last_name: 'Lilly',
-//     job_title: 'Software Engineer'
-// };
- 
-// const options = {
-//     method: 'POST',
-//     body: JSON.stringify(order),
-//     headers: {
-//         'Content-Type': 'application/json'
-//     }
-// }
- 
-// fetch('https://reqres.in/api/users', options)
-//     .then(res => res.json())
-//     .then(res => console.log(res));   

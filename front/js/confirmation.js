@@ -3,7 +3,7 @@ function getOrderIdToLocation(){
     let pageLocation = window.location.href;
     console.log(pageLocation);
     let newUrl = new URL(pageLocation);
-    let newOrderId = newUrl.searchParams.get("orderButton");
+    let newOrderId = newUrl.searchParams.get("orderId");
     return newOrderId;
 }
 

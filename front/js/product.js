@@ -35,6 +35,7 @@ function productGet(){
         for (var i = 0; i < localStorage.length; i++){
             console.log (localStorage.key(i));
         }
+        
          /**Function "addTagImgToDiv()" to create a tag "img", with its attributes, child of the tag "div" to classe "class = item__img" for one product of the API. Especially to the getElementsByClassName() method. */
         function addTagImgToDiv(){
             const newImgElmt = document.createElement("img");
@@ -84,26 +85,10 @@ function productGet(){
             }
         }
 
-        function valueInQuantity(){
-            document
-                .getElementById("quantity")
-                .setAttribute("value","1");
-        }
-
-        function valueInColor(){
-            var productColor = document.getElementById("colors").value;
-            if(productColor === ""){
-                alert('Il faut choisir une couleur SVP !!!');
-                addArticleToCart();
-            }
-        }
-
         /**The function "addDescriptionToArticle()" allows to add a product ("id", "quantity", "color") to the cart after the "click" of the mouse on the "Ajouter au panier" button of the product.html page */
         function addArticleToCart(){
             const addToCart = document.getElementById("addToCart");
             addToCart.addEventListener('click', (e) => {
-                // event.preventDefault();
-                // event.stopPropagation();
                 var productQty = parseInt(document.getElementById("quantity").value);
                 var productColor = document.getElementById("colors").value;  
                 var item = {
@@ -111,9 +96,6 @@ function productGet(){
                     quantity : productQty, 
                     color : productColor
                 }
-                // console.log(item.id);
-                // console.log(item.quantity);
-                // console.log(item.color + "color");
                 if(productColor === ""){
                     alert('Il faut choisir une couleur SVP !!!');
                     document.location.reload();
@@ -124,7 +106,6 @@ function productGet(){
                 if(itemsLocalStorage != null){
                     var itemOk = 0;
                     for (var i = 0; i < itemsLocalStorage.length; i++){
-                        // console.log(itemsLocalStorage.length);
                         // console.log(itemsLocalStorage[i].id);
                         // console.log(itemsLocalStorage[i].quantity);
                         // console.log(itemsLocalStorage[i].color);

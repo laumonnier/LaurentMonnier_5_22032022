@@ -8,7 +8,7 @@ async function getProducts() {
             return res.json();
         }
     })
-    /** After a first pass in the ".then" method to check if the result of the request is "OK" or     "NO". Another 'promise' is sent back to the next ".then" or ". catch" direction if there is an error. */
+    /** After a first pass in the ".then" method to check if the result of the request is "OK" or "NO". Another 'promise' is sent back to the next ".then" or ". catch" direction if there is an error. */
     // Parameters of the data sent by the API:
     /**
      * Recovering data
