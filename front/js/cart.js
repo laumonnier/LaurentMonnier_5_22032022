@@ -491,7 +491,7 @@ async function postOrder(order){
     })
     .catch(err => {
             console.log (err);
-            alert("Ca ne va pas du tout Mouna !");
+            alert("There is a ploblem !");
     });
 }
 
@@ -533,7 +533,7 @@ function formOrderClicked(){
                                 contact,
                                 products:orderProducts,
                             };
-                            orderButtonId = randomNumber();
+                            // orderButtonId = randomNumber();
                             // console.log(orderButtonId);
                             console.log(order); //Test 1
 
