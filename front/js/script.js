@@ -94,12 +94,7 @@ async function getProducts() {
                 var listArticle = document.getElementsByTagName("article");
                 listArticle[product].appendChild(newEltPrgrph);
             }
-        }    
-        var url = `http://localhost:3000/images?id=${products[0]._id}`;
-        var newUrl_a = new URL(url);
-        var id = newUrl_a.searchParams.get("id");
-        console.log(id);
-        console.log(products[1]);    
+        }        
     })
     /**In case of error of the request, it is caught to make us understand that there was an error in the request. */
     .catch(function(err){

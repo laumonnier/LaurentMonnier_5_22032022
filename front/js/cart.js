@@ -368,7 +368,7 @@ function firstNameValidated(){
 
 /**Function to validate the form user’s last name with a RegEx. */
 function lastNameControl(){
-    let maskLastName = /[A-Za-z\-]/g;
+    let maskLastName = /[A-Za-z]/g;
     controlField(maskLastName, lastName, "lastName", "un Nom de Famille", "");
     emptyField(lastName.value, "lastName");
     if(emptyField(lastName.value, "lastName") == true){

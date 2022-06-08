@@ -100,6 +100,11 @@ function productGet(){
                     alert('Il faut choisir une couleur SVP !!!');
                     document.location.reload();
                     addArticleToCart();
+                }
+                if(productQty === 0){
+                    alert('Il faut choisir une quantité différente de "0" SVP !!!');
+                    document.location.reload();
+                    addArticleToCart();
                 }else{
                 var itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
                 // console.log(itemsLocalStorage);
