@@ -1,6 +1,5 @@
 /**----------------------------Initialization-----------------------------*/
 const api_url = 'http://localhost:3000/api/products/';
-const api_url1 = 'http://localhost:3000/api/order';
 let itemsLocalStorage = JSON.parse(localStorage.getItem("item"));
 
 // console.log(itemsLocalStorage); //Test positif
